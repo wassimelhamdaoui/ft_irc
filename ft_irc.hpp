@@ -11,16 +11,21 @@
 #include <signal.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include <poll.h>
- #include <sys/select.h>
+# include <poll.h>
+# include <sys/select.h>
+# include <string.h>
+# include <string>
+# include<sstream>  
 
-class ft_irc
+class server
 {
-private:
-    /* data */
-public:
-    ft_irc(/* args */);
-    ~ft_irc();
+    private:
+        int _port;
+    public:
+        server(/* args */);
+        server(int port);
+        void run();
+        ~server();
 };
 
 

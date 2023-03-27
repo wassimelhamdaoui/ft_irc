@@ -2,7 +2,7 @@ HEADER=ft_irc.hpp
 CC=c++
 FLAGS= -std=c++98 -Wall -Wextra -Werror
 
-SRCS=main.cpp
+SRCS=main.cpp ft_irc.cpp
 OBJS=$(SRCS:.cpp=.o)
 NAME=IRC
 
