@@ -39,12 +39,13 @@ bool    bind_and_listen(int socket_listen, struct addrinfo *bind_adress)
     std::cout << "Binding socket to local address..." << std::endl;
     if (bind(socket_listen, bind_adress->ai_addr, bind_adress->ai_addrlen))
     {
+        freeaddrinfo(bind_adress);
         std::cout << "Binding socket is failed!" << std::endl;
         return false;
     }
     freeaddrinfo(bind_adress);
     std::cout << "listening..." << std::endl;
-    if (listen(socket_listen, 10) < 0)
+    if (listen(socket_listen, SOMAXCONN) < 0)
     {
         std::cout << "listen failed!" << std::endl;
         return false;
@@ -68,13 +69,13 @@ int accept_connection(int socket_listen, fd_set *master, int *max_socket)
     char address_buffer[100];
     getnameinfo((struct sockaddr*)&client_adress, client_len, address_buffer, sizeof(address_buffer), 0, 0, NI_NUMERICHOST);
     std::cout << "New connection from: " << address_buffer << std::endl;
-    return(1);
+    return(socket_client);
 }
 
 int request_handler(int i, fd_set *master)
 {
-    char read[512];
-    int bytes_received = recv(i, read, 512, 0);
+    char read[4608];
+    int bytes_received = recv(i, read, 4608, 0);adou97
     if (bytes_received < 1){
         FD_CLR(i, master);
         close(i);
@@ -83,7 +84,8 @@ int request_handler(int i, fd_set *master)
 
     for (int j = 0; j < bytes_received; j++)
         read[j] = toupper(read[j]);
-    send(i, read, bytes_received, 0);
+    if (send(i, read, bytes_received, 0) < 0)
+        return (-1);
     return (1);
 }
 
@@ -96,7 +98,7 @@ void server::run()
         return;
     if (!bind_and_listen(socket_listen, bind_adress))
         return;
-
+    fcntl(socket_listen, F_SETFL, O_NONBLOCK);
     fd_set master;
     FD_ZERO(&master);
     FD_SET(socket_listen, &master);
@@ -115,8 +117,10 @@ void server::run()
         for (int i = 0; i <= max_socket; i++) {
             if (FD_ISSET(i, &reads)){
                 if (i == socket_listen) {
-                    if (accept_connection(socket_listen, &master, &max_socket) < 0)
+                    int socket_client = accept_connection(socket_listen, &master, &max_socket);
+                    if ( socket_client< 0)
                         return;
+                    fcntl(socket_client, F_SETFL, O_NONBLOCK);  
                 }
                 else{
                     if (request_handler(i, &master) < 0)
