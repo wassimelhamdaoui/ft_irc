@@ -25,6 +25,7 @@ class server
         server(/* args */);
         server(int port);
         void run();
+        struct addrinfo *get_address();
         ~server();
 };
 
