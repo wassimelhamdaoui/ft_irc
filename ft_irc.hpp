@@ -29,5 +29,7 @@ class server
         ~server();
 };
 
+bool    is_digit(char *str);
+bool is_valid_pass(int ac, char **av);
 
 # endif

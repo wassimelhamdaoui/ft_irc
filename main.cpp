@@ -75,7 +75,7 @@ int accept_connection(int socket_listen, fd_set *master, int *max_socket)
 int request_handler(int i, fd_set *master)
 {
     char read[4608];
-    int bytes_received = recv(i, read, 4608, 0);adou97
+    int bytes_received = recv(i, read, 4608, 0);
     if (bytes_received < 1){
         FD_CLR(i, master);
         close(i);
@@ -133,9 +133,11 @@ void server::run()
     return;
 }
 
-int main(void)
+int main(int ac, char **av)
 {
-    server s(6667);
+    if (!is_valid_pass(ac, av))
+        return 1;
+    server s(atoi(av[1]));
     s.run();
     return 0;
 }
