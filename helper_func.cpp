@@ -1,4 +1,4 @@
-#include "ft_irc.hpp"
+#include "server.hpp"
 
 bool    is_digit(char *str)
 {

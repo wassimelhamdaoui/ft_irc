@@ -1,8 +1,8 @@
-HEADER=ft_irc.hpp
+HEADER=server.hpp
 CC=c++
 FLAGS= -std=c++98 -Wall -Wextra -Werror
 
-SRCS=main.cpp ft_irc.cpp helper_func.cpp
+SRCS=main.cpp server.cpp helper_func.cpp
 OBJS=$(SRCS:.cpp=.o)
 NAME=IRC
 
