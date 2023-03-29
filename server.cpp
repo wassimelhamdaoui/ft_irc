@@ -137,7 +137,9 @@ void server::run()
 }
 
 
-/***** Class Constructors ****/
+/***** Class Methodes ****/
+
+const std::string server::pass = "123";
 server::server(/* args */)
 : _port(0)
 {
@@ -146,6 +148,11 @@ server::server(/* args */)
 server::server(int port)
 : _port(port)
 {
+}
+
+std::string server::get_pass()
+{
+    return (pass);
 }
 
 // void server::run()

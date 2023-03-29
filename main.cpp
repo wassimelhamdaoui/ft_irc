@@ -13,8 +13,6 @@ char *parse_request(char *read)
     return(request);
 }
 
-
-
 int main(int ac, char **av)
 {
     if (!is_valid_pass(ac, av))

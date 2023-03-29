@@ -21,10 +21,12 @@ class server
 {
     private:
         int _port;
+        static  const std::string pass;
     public:
         server(/* args */);
         server(int port);
-        void run();
+        std::string get_pass();
+        void        run();
         struct addrinfo *get_address();
         ~server();
 };
