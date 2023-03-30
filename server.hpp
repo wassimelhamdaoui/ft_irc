@@ -15,24 +15,34 @@
 # include <sys/select.h>
 # include <string.h>
 # include <string>
-# include<sstream>  
+# include<sstream>
+# include <stdexcept>
 
 class server
 {
-    private:
-        int _port;
-        static  const std::string pass;
-    public:
-        server(/* args */);
-        server(int port);
-        std::string get_pass();
-        void        run();
-        struct addrinfo *get_address();
-        ~server();
+	private:
+		int _port;
+		std::string pass;
+	public:
+		server(/* args */);
+		server(int port, std::string pass);
+
+		/**********  sever methodes *********/
+
+		std::string		get_pass();
+		int				get_port();
+		void        	run();
+		struct addrinfo *get_address();
+		int             request_handler(int i, fd_set *master);
+		int 			create_socket(struct addrinfo *bind_adress);
+		bool			bind_and_listen(int socket_listen, struct addrinfo *bind_adress);
+		int				accept_connection(int socket_listen, fd_set *master, int *max_socket);
+
+		/**********  destructor *********/
+		~server();
 };
 
-bool    is_digit(char *str);
-bool is_valid_pass(int ac, char **av);
+bool is_valid_arg(int ac, char **av);
 
 /***** SERVER FUNCTIONS ****/
 int request_handler(int i, fd_set *master);

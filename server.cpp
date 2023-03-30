@@ -1,6 +1,35 @@
 #include "server.hpp"
 
-int request_handler(int i, fd_set *master)
+/***** Class Methodes ****/
+
+server::server(/* args */)
+: _port(0), pass("")
+{
+}
+
+server::server(int port, std::string pass)
+{
+    _port = port;
+    if (_port < 6667 || _port > 7005)
+        throw std::invalid_argument("port must be between 6667 and 7005");
+    this->pass = pass;
+}
+
+std::string server::get_pass()
+{
+    return (pass);
+}
+
+int     server::get_port()
+{
+    return (_port);
+}
+
+server::~server()
+{
+}
+
+int server::request_handler(int i, fd_set *master)
 {
     char read[4608];
     int bytes_received = recv(i, read, 4608, 0);
@@ -9,6 +38,7 @@ int request_handler(int i, fd_set *master)
         close(i);
         return (-1);
     }
+    read[bytes_received - 2] = '\0';
 
     char *response = parse_request(read);
     if (send(i, response, bytes_received, 0) < 0 || response == NULL)
@@ -40,7 +70,7 @@ struct addrinfo *server::get_address()
     return (bind_adress);
 }
 
-int create_socket(struct addrinfo *bind_adress)
+int server::create_socket(struct addrinfo *bind_adress)
 {
     int socket_listen;
     std::cout << "Creating a socker..." << std::endl;
@@ -53,7 +83,7 @@ int create_socket(struct addrinfo *bind_adress)
     return (socket_listen);
 }
 
-bool    bind_and_listen(int socket_listen, struct addrinfo *bind_adress)
+bool    server::bind_and_listen(int socket_listen, struct addrinfo *bind_adress)
 {
     std::cout << "Binding socket to local address..." << std::endl;
     if (bind(socket_listen, bind_adress->ai_addr, bind_adress->ai_addrlen))
@@ -72,7 +102,7 @@ bool    bind_and_listen(int socket_listen, struct addrinfo *bind_adress)
     return (true);
 }
 
-int accept_connection(int socket_listen, fd_set *master, int *max_socket)
+int server::accept_connection(int socket_listen, fd_set *master, int *max_socket)
 {
     struct sockaddr_storage client_adress;
     socklen_t client_len = sizeof(client_adress);
@@ -101,7 +131,11 @@ void server::run()
         return;
     if (!bind_and_listen(socket_listen, bind_adress))
         return;
-    fcntl(socket_listen, F_SETFL, O_NONBLOCK);
+    if (fcntl(socket_listen, F_SETFL, O_NONBLOCK) < 0)
+    {
+        std::cout << "fcntl() failed!" << std::cout << std::endl;
+        return;
+    }
     fd_set master;
     FD_ZERO(&master);
     FD_SET(socket_listen, &master);
@@ -109,9 +143,9 @@ void server::run()
 
     //  set up our call to select():
     std::cout << "Waiting for connections...\n" << std::endl;
+    fd_set reads;
     while (true)
     {
-        fd_set reads;
         reads = master;
         if (select(max_socket +1, &reads, 0, 0, 0) < 0){
             std::cout << "select failed!" << std::endl;
@@ -123,7 +157,11 @@ void server::run()
                     int socket_client = accept_connection(socket_listen, &master, &max_socket);
                     if ( socket_client< 0)
                         return;
-                    fcntl(socket_client, F_SETFL, O_NONBLOCK);  
+                    if (fcntl(socket_client, F_SETFL, O_NONBLOCK) < 0)
+                    {
+                        std::cout << "fcntl() failed!" << std::cout << std::endl;
+                        return;
+                    }
                 }
                 else{
                     if (request_handler(i, &master) < 0)
@@ -136,30 +174,3 @@ void server::run()
     return;
 }
 
-
-/***** Class Methodes ****/
-
-const std::string server::pass = "123";
-server::server(/* args */)
-: _port(0)
-{
-}
-
-server::server(int port)
-: _port(port)
-{
-}
-
-std::string server::get_pass()
-{
-    return (pass);
-}
-
-// void server::run()
-// {
-//     std::cout << "server running on port " << _port << std::endl;
-// }
-
-server::~server()
-{
-}
