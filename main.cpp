@@ -1,9 +1,9 @@
 #include "server.hpp"
 
-char *parse_request(char *read)
+std::string parse_request(char *read)
 {
-    int len = strlen(read);
-    char *request = new char[len];
+    std::string request;
+    request = read;
     int i = 0;
     while (read[i])
     {

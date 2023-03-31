@@ -40,13 +40,10 @@ int server::request_handler(int i, fd_set *master)
     }
     read[bytes_received - 2] = '\0';
 
-    char *response = parse_request(read);
-    if (send(i, response, bytes_received, 0) < 0 || response == NULL)
-    {
-        delete[] response;
+    std::string response = parse_request(read);
+    response += "\n";
+    if (send(i, response.c_str(), bytes_received, 0) < 0 || response.empty())
         return (-1);
-    }
-    delete[] response;
     return (1);
 }
 

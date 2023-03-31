@@ -49,6 +49,6 @@ int request_handler(int i, fd_set *master);
 int create_socket(struct addrinfo *bind_adress);
 bool    bind_and_listen(int socket_listen, struct addrinfo *bind_adress);
 int accept_connection(int socket_listen, fd_set *master, int *max_socket);
-char *parse_request(char *read);
+std::string parse_request(char *read);
 
 # endif
