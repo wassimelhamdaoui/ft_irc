@@ -1,9 +1,11 @@
 #include "server.hpp"
 
 /***** Class Methodes ****/
+int server::_port = 0;
+std::string server::_pass = "";
+bool server::_auth = false;
 
-server::server(/* args */)
-: _port(0), pass("")
+server::server()
 {
 }
 
@@ -12,12 +14,12 @@ server::server(int port, std::string pass)
     _port = port;
     if (_port < 6667 || _port > 7005)
         throw std::invalid_argument("port must be between 6667 and 7005");
-    this->pass = pass;
+    this->_pass = pass;
 }
 
 std::string server::get_pass()
 {
-    return (pass);
+    return (_pass);
 }
 
 int     server::get_port()
@@ -25,9 +27,31 @@ int     server::get_port()
     return (_port);
 }
 
+bool    server::get_authentication()
+{
+    return (this->_auth);
+}
+
+void    server::set_pass(std::string pass)
+{
+    this->_pass = pass;
+}
+
+void    server::set_port(int port)
+{
+    this->_port = port;
+}
+
+void    server::set_authentication(bool auth)
+{
+    this->_auth = auth;
+}
+
 server::~server()
 {
 }
+
+/*-------------- Server Functions -----------------*/
 
 int server::request_handler(int i, fd_set *master)
 {
@@ -39,11 +63,7 @@ int server::request_handler(int i, fd_set *master)
         return (-1);
     }
     read[bytes_received - 2] = '\0';
-
     parse_request(read, i);
-    // response += "\n";
-    // if (send(i, response.c_str(), bytes_received, 0) < 0 || response.empty())
-    //     return (-1);
     return (1);
 }
 

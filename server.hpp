@@ -22,8 +22,9 @@
 class server
 {
 	private:
-		int _port;
-		std::string pass;
+		static int _port;
+		static std::string _pass;
+		static bool _auth;
 	public:
 		server(/* args */);
 		server(int port, std::string pass);
@@ -32,6 +33,10 @@ class server
 
 		std::string		get_pass();
 		int				get_port();
+		bool			get_authentication();
+		void			set_pass(std::string pass);
+		void			set_port(int port);
+		void			set_authentication(bool);
 		void        	run();
 		struct addrinfo *get_address();
 		int             request_handler(int i, fd_set *master);
@@ -52,5 +57,6 @@ bool    bind_and_listen(int socket_listen, struct addrinfo *bind_adress);
 int accept_connection(int socket_listen, fd_set *master, int *max_socket);
 //std::string parse_request(char *read);
 void    parse_request(char *read, int fd);
+char	**ft_split(char *str, char delim);
 
 # endif
