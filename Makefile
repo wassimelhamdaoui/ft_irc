@@ -2,7 +2,7 @@ HEADER=server.hpp
 CC=c++
 FLAGS= -std=c++98 -Wall -Wextra -Werror
 
-SRCS=main.cpp server.cpp helper_func.cpp
+SRCS=main.cpp server.cpp helper_func.cpp split.cpp
 OBJS=$(SRCS:.cpp=.o)
 NAME=IRC
 

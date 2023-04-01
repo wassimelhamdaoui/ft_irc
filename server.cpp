@@ -40,10 +40,10 @@ int server::request_handler(int i, fd_set *master)
     }
     read[bytes_received - 2] = '\0';
 
-    std::string response = parse_request(read);
-    response += "\n";
-    if (send(i, response.c_str(), bytes_received, 0) < 0 || response.empty())
-        return (-1);
+    parse_request(read, i);
+    // response += "\n";
+    // if (send(i, response.c_str(), bytes_received, 0) < 0 || response.empty())
+    //     return (-1);
     return (1);
 }
 
@@ -54,9 +54,9 @@ struct addrinfo *server::get_address()
     std::stringstream ss;
     struct addrinfo *bind_adress;
 
-    ss<< _port;
+    ss << _port;
     ss >> port;
-    std::cout << "configuring local adress..." << std::endl;
+    std::cout << "configuring local address..." << std::endl;
 
     memset(&hints, 0, sizeof(hints));
     hints.ai_family = AF_INET;

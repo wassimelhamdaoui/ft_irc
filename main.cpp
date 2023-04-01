@@ -1,6 +1,6 @@
 #include "server.hpp"
 
-std::string parse_request(char *read)
+void    parse_request(char *read, int fd)
 {
     std::string request;
     request = read;
@@ -10,7 +10,9 @@ std::string parse_request(char *read)
         request[i] = toupper(read[i]);
         i++;
     }
-    return(request);
+    request += "\n";
+    send(fd, request.c_str(), request.size(), 0);
+        //return (-1);
 }
 
 int main(int ac, char **av)
