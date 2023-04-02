@@ -1,8 +1,8 @@
-HEADER=server.hpp
+HEADER = server.hpp Client.hpp
 CC=c++
 FLAGS= -std=c++98 -Wall -Wextra -Werror
 
-SRCS=main.cpp server.cpp helper_func.cpp split.cpp
+SRCS=main.cpp server.cpp helper_func.cpp split.cpp pass.cpp Client.cpp
 OBJS=$(SRCS:.cpp=.o)
 NAME=IRC
 
@@ -10,6 +10,8 @@ all:$(NAME)
 
 $(NAME):$(OBJS) $(HEADER)
 	$(CC) $(FLAGS) $(OBJS) -o $(NAME)
+
+add : all clean
 
 %.o:%.cpp $(HEADER)
 			$(CC) $(FLAGS) -c $< -o $@

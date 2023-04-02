@@ -18,13 +18,19 @@
 # include<sstream>
 # include <stdexcept>
 #include <stdlib.h>
+#include <vector>
+#include <map>
+#include <stack>
+#include "Client.hpp"
+
 
 class server
 {
 	private:
 		static int _port;
 		static std::string _pass;
-		static bool _auth;
+		static std::map<int, Client> _map;
+		
 	public:
 		server(/* args */);
 		server(int port, std::string pass);
@@ -40,6 +46,7 @@ class server
 		void        	run();
 		struct addrinfo *get_address();
 		int             request_handler(int i, fd_set *master);
+		void   			parse_request(char *read, int fd);
 		int 			create_socket(struct addrinfo *bind_adress);
 		bool			bind_and_listen(int socket_listen, struct addrinfo *bind_adress);
 		int				accept_connection(int socket_listen, fd_set *master, int *max_socket);
@@ -57,6 +64,7 @@ bool    bind_and_listen(int socket_listen, struct addrinfo *bind_adress);
 int accept_connection(int socket_listen, fd_set *master, int *max_socket);
 //std::string parse_request(char *read);
 void    parse_request(char *read, int fd);
-char	**ft_split(char *str, char delim);
+char	**split(char *str, char delim);
+std::string pass_response(std::string buff, Client &client);
 
 # endif
