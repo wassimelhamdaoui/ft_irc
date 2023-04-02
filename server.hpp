@@ -18,6 +18,8 @@
 # include<sstream>
 # include <stdexcept>
 #include <stdlib.h>
+#include<map>
+#include<vector>
 
 class server
 {
@@ -29,7 +31,7 @@ class server
 		server(/* args */);
 		server(int port, std::string pass);
 
-		/**********  sever methodes *********/
+		/**********  server methodes *********/
 
 		std::string		get_pass();
 		int				get_port();
