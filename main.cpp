@@ -37,8 +37,6 @@ void    server::parse_request(char *read, int fd)
     //     this->_map.insert(std::make_pair(fd, client));
     response = pass_response(request, client);
 
-
-
     send(fd, response.c_str(), response.size(), 0);
 }
 
