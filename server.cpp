@@ -60,25 +60,19 @@ int server::request_handler(int i, fd_set *master)
             FD_CLR(i, master);
             return -1;
         }
-
         std::string str(read, bytes_received);
         request += str;
-
         size_t newline_pos = request.find('\n');
         if (newline_pos != std::string::npos)
         {
-            // Process the request
             std::string request_line = request.substr(0, newline_pos);
-            std::cout << "request: " << request_line << std::endl;
-
-            // set \0 to the end of the request to avoid errors
+            // std::cout << "request: " << request_line << std::endl;
             request_line[request_line.length() - 1] = '\0';
             request_line += "\n";
             send(i, request_line.c_str(), request_line.length(), 0);
             request.erase(0, newline_pos + 1);
         }
     }
-
     return (1);
 }
 
