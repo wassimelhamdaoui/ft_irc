@@ -72,7 +72,7 @@ char	**ft_free(char **res, int j)
 	return (NULL);
 }
 
-char	**ft_split(char *str, char delim)
+char	**split(char *str, char delim)
 {
 	int		i;
 	int		word_count;

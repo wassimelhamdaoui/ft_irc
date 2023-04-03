@@ -3,7 +3,6 @@
 /***** Class Methodes ****/
 int server::_port = 0;
 std::string server::_pass = "";
-bool server::_auth = false;
 
 server::server()
 {
@@ -27,11 +26,6 @@ int     server::get_port()
     return (_port);
 }
 
-bool    server::get_authentication()
-{
-    return (this->_auth);
-}
-
 void    server::set_pass(std::string pass)
 {
     this->_pass = pass;
@@ -42,10 +36,7 @@ void    server::set_port(int port)
     this->_port = port;
 }
 
-void    server::set_authentication(bool auth)
-{
-    this->_auth = auth;
-}
+
 
 server::~server()
 {
@@ -53,6 +44,8 @@ server::~server()
 
 /*-------------- Server Functions -----------------*/
 
+
+/////////// work heeeeeeere //////////
 int server::request_handler(int i, fd_set *master)
 {
     char read[4608];
@@ -150,7 +143,7 @@ void server::run()
         return;
     if (fcntl(socket_listen, F_SETFL, O_NONBLOCK) < 0)
     {
-        std::cout << "fcntl() failed!" << std::cout << std::endl;
+        std::cout << "fcntl() failed!" << std::endl;
         return;
     }
     fd_set master;
@@ -176,7 +169,7 @@ void server::run()
                         return;
                     if (fcntl(socket_client, F_SETFL, O_NONBLOCK) < 0)
                     {
-                        std::cout << "fcntl() failed!" << std::cout << std::endl;
+                        std::cout << "fcntl() failed!" << std::endl;
                         return;
                     }
                 }
