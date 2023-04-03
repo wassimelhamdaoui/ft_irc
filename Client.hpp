@@ -1,8 +1,20 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Client.hpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mabdelba <mabdelba@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/02 20:22:12 by mabdelba          #+#    #+#             */
+/*   Updated: 2023/04/02 20:22:13 by mabdelba         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CLIENT_HPP
 # define CLIENT_HPP
 
-# include <iostream>
-# include <string>
+# include "server.hpp"
+
 
 class Client
 {
@@ -31,8 +43,6 @@ class Client
 		std::string _nick;
 		bool		_pass;
 		bool 		_auth;
-
-
 };
 
 #endif /* ********************************************************** CLIENT_H */

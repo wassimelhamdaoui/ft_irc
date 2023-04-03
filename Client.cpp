@@ -1,18 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Client.cpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mabdelba <mabdelba@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/02 20:22:15 by mabdelba          #+#    #+#             */
+/*   Updated: 2023/04/02 20:22:16 by mabdelba         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "Client.hpp"
 
-/*
-** ------------------------------- CONSTRUCTOR --------------------------------
-*/
 
-Client::Client(): _fd(0), _nick(""),_pass(false),_auth(false)
+Client::Client(): _fd(0), _nick(""), _pass(false),_auth(false)
 {
 }
-
-Client::Client(int fd): _fd(fd), _nick(""),_pass(false),_auth(false)
+Client::Client(int fd): _fd(fd), _nick(""), _pass(false), _auth(false)
 {
 }
-
-
 Client::Client( const Client & src )
 {
 	*this = src;
@@ -90,5 +96,7 @@ void	Client::set_auth(bool auth)
 	this->_auth = auth;
 }
 
+
+/* ************************************************************************** */
 
 /* ************************************************************************** */
