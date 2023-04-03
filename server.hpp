@@ -23,12 +23,14 @@
 #include <vector>
 #include <map>
 #include <stack>
+#include <unordered_map>
 #include "Client.hpp"
 
 
 class server
 {
 	private:
+		std::unordered_map<int, std::pair<std::string, bool> > client_data;
 		static int _port;
 		static std::string _pass;
 		std::vector<std::string> _nickname;
