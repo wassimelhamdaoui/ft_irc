@@ -26,6 +26,7 @@
 #include <unordered_map>
 #include "Client.hpp"
 
+class Client;
 
 class server
 {
