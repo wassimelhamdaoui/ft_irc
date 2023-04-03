@@ -46,34 +46,83 @@ server::~server()
 
 
 /////////// work heeeeeeere //////////
+// int server::request_handler(int i, fd_set *master)
+// {
+//     char read[4608];
+//     static std::string request = "";
+//     int bytes_received;
+
+//     while ((bytes_received = recv(i, read, 4608, 0)) > 0)
+//     {
+//         if (bytes_received == -1)
+//         {
+//             close(i);
+//             FD_CLR(i, master);
+//             return -1;
+//         }
+//         std::string str(read, bytes_received);
+//         request += str;
+//         size_t newline_pos = request.find('\n');
+//         if (newline_pos != std::string::npos)
+//         {
+//             std::string request_line = request.substr(0, newline_pos);
+//             // std::cout << "request: " << request_line << std::endl;
+//             request_line[request_line.length() - 1] = '\0';
+//             request_line += "\n";
+//             send(i, request_line.c_str(), request_line.length(), 0);
+//             request.erase(0, newline_pos + 1);
+//         }
+//     }
+//     return (1);
+// }
+
+std::unordered_map<int, std::pair<std::string, bool> > client_data;
+
 int server::request_handler(int i, fd_set *master)
 {
-    char read[4608];
-    static std::string request = "";
-    int bytes_received;
+    char read_buf[4608];
+    int bytes_received = recv(i, read_buf, 4608, 0);
 
-    while ((bytes_received = recv(i, read, 4608, 0)) > 0)
-    {
-        if (bytes_received == -1)
-        {
-            close(i);
-            FD_CLR(i, master);
-            return -1;
-        }
-        std::string str(read, bytes_received);
-        request += str;
-        size_t newline_pos = request.find('\n');
-        if (newline_pos != std::string::npos)
-        {
-            std::string request_line = request.substr(0, newline_pos);
-            // std::cout << "request: " << request_line << std::endl;
-            request_line[request_line.length() - 1] = '\0';
-            request_line += "\n";
-            send(i, request_line.c_str(), request_line.length(), 0);
-            request.erase(0, newline_pos + 1);
+    if (bytes_received == -1) {
+        close(i);
+        FD_CLR(i, master);
+        client_data.erase(i); // Remove client data from map
+        return -1;
+    }
+
+    // Append received data to client's data stream
+    std::string& client_stream = client_data[i].first;
+    client_stream.append(read_buf, bytes_received);
+
+    // Check for newline character
+    size_t newline_pos = client_stream.find('\n');
+    if (newline_pos != std::string::npos) {
+        std::string request = client_stream.substr(0, newline_pos);
+        request[request.length() - 1] = '\0';
+
+        parse_request((char *)request.c_str(), i);
+
+        // Remove processed data from client's data stream
+        client_stream.erase(0, newline_pos+1);
+
+        // If CTRL+D was previously received, send back stored data
+        if (client_data[i].second) {
+            // Send stored data
+            std::string stored_data = client_data[i].first;
+            send(i, stored_data.c_str(), stored_data.size(), 0);
+
+            // Clear stored data
+            client_data[i].first.clear();
+            client_data[i].second = false;
         }
     }
-    return (1);
+
+    // Check for CTRL+D
+    if (bytes_received == 0) {
+        client_data[i].second = true;
+    }
+
+    return 1;
 }
 
 struct addrinfo *server::get_address()
