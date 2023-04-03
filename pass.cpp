@@ -6,7 +6,7 @@
 /*   By: mabdelba <mabdelba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 19:52:15 by mabdelba          #+#    #+#             */
-/*   Updated: 2023/04/02 06:34:42 by mabdelba         ###   ########.fr       */
+/*   Updated: 2023/04/02 23:32:30 by mabdelba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,25 +35,25 @@ void    erase_charcter(std::string& str, char c)
     }
 }
 
-std::string pass_response(std::string buff, Client &client)
+std::string server::pass_response(std::string buff, Client &client)
 {
-	server myserver;
-	if(!client.get_pass())
+	std::vector<std::string> Vect;
+	Vect = ft_split(buff, ' ');
+	if(!client.get_pass() && !Vect.empty())
 	{
-		std::vector<std::string> Vect;
-		Vect = ft_split(buff, ' ');
 		if(Vect[0] != "PASS")
 			return("You must enter the password <PASS>\n");
 		size_t param = Vect.size();
 		if(param < 2)
 			return ("<client> <command> :Not enough parameters\n");
-		if(Vect[1] != myserver.get_pass())
+		if(Vect[1] != this->get_pass())
 			return("<client> :Password incorrect\n");
 		client.set_pass(true);
 		return("<client> : welcome\n");
 	}
-	else
+	else if(!Vect.empty() && Vect[0] == "PASS")
 		return "<client> :You may not reregister\n";
+	return (nick_response(buff, client));
 }
 
 
