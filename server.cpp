@@ -45,38 +45,7 @@ server::~server()
 /*-------------- Server Functions -----------------*/
 
 
-/////////// work heeeeeeere //////////
-// int server::request_handler(int i, fd_set *master)
-// {
-//     char read[4608];
-//     static std::string request = "";
-//     int bytes_received;
-
-//     while ((bytes_received = recv(i, read, 4608, 0)) > 0)
-//     {
-//         if (bytes_received == -1)
-//         {
-//             close(i);
-//             FD_CLR(i, master);
-//             return -1;
-//         }
-//         std::string str(read, bytes_received);
-//         request += str;
-//         size_t newline_pos = request.find('\n');
-//         if (newline_pos != std::string::npos)
-//         {
-//             std::string request_line = request.substr(0, newline_pos);
-//             // std::cout << "request: " << request_line << std::endl;
-//             request_line[request_line.length() - 1] = '\0';
-//             request_line += "\n";
-//             send(i, request_line.c_str(), request_line.length(), 0);
-//             request.erase(0, newline_pos + 1);
-//         }
-//     }
-//     return (1);
-// }
-
-std::unordered_map<int, std::pair<std::string, bool> > client_data;
+/////////// work heeeeeeere //////////////////////////
 
 int server::request_handler(int i, fd_set *master)
 {

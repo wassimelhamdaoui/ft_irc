@@ -28,6 +28,7 @@
 class server
 {
 	private:
+		std::unordered_map<int, std::pair<std::string, bool> > client_data;
 		static int _port;
 		static std::string _pass;
 		static std::map<int, Client> _map;
