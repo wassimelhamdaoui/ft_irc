@@ -49,14 +49,33 @@ server::~server()
 int server::request_handler(int i, fd_set *master)
 {
     char read[4608];
-    int bytes_received = recv(i, read, 4608, 0);
-    if (bytes_received < 1){
-        FD_CLR(i, master);
-        close(i);
-        return (-1);
+    static std::string request = "";
+    int bytes_received;
+
+    while ((bytes_received = recv(i, read, 4608, 0)) > 0)
+    {
+        if (bytes_received == -1)
+        {
+            close(i);
+            FD_CLR(i, master);
+            return -1;
+        }
+
+        std::string str(read, bytes_received);
+        request += str;
+
+        size_t newline_pos = request.find('\n');
+        if (newline_pos != std::string::npos)
+        {
+            // Process the request
+            std::string request_line = request.substr(0, newline_pos);
+            std::cout << "request: " << request_line << std::endl;
+            request_line += "\n";
+            send(i, request_line.c_str(), request_line.length(), 0);
+            request.erase(0, newline_pos + 1);
+        }
     }
-    read[bytes_received - 2] = '\0';
-    parse_request(read, i);
+
     return (1);
 }
 
@@ -72,7 +91,7 @@ struct addrinfo *server::get_address()
     std::cout << "configuring local address..." << std::endl;
 
     memset(&hints, 0, sizeof(hints));
-    hints.ai_family = AF_INET;
+    hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_flags = AI_PASSIVE;
 
@@ -154,30 +173,36 @@ void server::run()
     //  set up our call to select():
     std::cout << "Waiting for connections...\n" << std::endl;
     fd_set reads;
+    // fd_set writes;
+    // FD_ZERO(&writes);
     while (true)
     {
         reads = master;
+
         if (select(max_socket +1, &reads, 0, 0, 0) < 0){
             std::cout << "select failed!" << std::endl;
-            return;
+            return ;
         }
         for (int i = 0; i <= max_socket; i++) {
             if (FD_ISSET(i, &reads)){
                 if (i == socket_listen) {
                     int socket_client = accept_connection(socket_listen, &master, &max_socket);
-                    if ( socket_client< 0)
-                        return;
-                    if (fcntl(socket_client, F_SETFL, O_NONBLOCK) < 0)
-                    {
-                        std::cout << "fcntl() failed!" << std::endl;
-                        return;
-                    }
+                   // FD_SET(socket_client, &writes);
+                    if ( socket_client < 0)
+                        return ;
                 }
                 else{
                     if (request_handler(i, &master) < 0)
                         continue;
                 }
             }
+            // else{
+            //     if (FD_ISSET(i, &writes)){
+            //         continue;
+            //         // if (response_handler(i, &master) < 0)
+            //         //     continue;
+            //     }
+            // }
         } 
     }
     close(socket_listen);
