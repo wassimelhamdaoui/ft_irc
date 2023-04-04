@@ -96,22 +96,23 @@ void Channel::set_cannels(std::map<std::string, int> cannels)
     this->cannels = cannels;
 }
 
-void Channel::add_member(std::string member)
+void Channel::add_member(Client &client)
 {
-    this->members.push_back(member);
+    this->members.push_back(client.get_nick());
+    this->cannels[client.get_nick()] = 0;
 }
 
-void Channel::ban_user(std::string user)
+void Channel::ban_user(Client &client)
 {
-    this->_bans_list.push_back(user);
+    this->_bans_list.push_back(client.get_nick());
 }
 
-void Channel::remove_member(std::string member)
+void Channel::remove_member(Client &client)
 {
     std::vector<std::string>::iterator it = this->members.begin();
     while (it != this->members.end())
     {
-        if (*it == member)
+        if (*it == client.get_nick())
         {
             this->members.erase(it);
             break;
@@ -120,12 +121,12 @@ void Channel::remove_member(std::string member)
     }
 }
 
-void Channel::unban_user(std::string user)
+void Channel::unban_user(Client &client)
 {
     std::vector<std::string>::iterator it = this->_bans_list.begin();
     while (it != this->_bans_list.end())
     {
-        if (*it == user)
+        if (*it == client.get_nick())
         {
             this->_bans_list.erase(it);
             break;
@@ -134,17 +135,30 @@ void Channel::unban_user(std::string user)
     }
 }
 
-bool Channel::is_banned(std::string user)
+bool Channel::is_banned(Client &client)
 {
     std::vector<std::string>::iterator it = this->_bans_list.begin();
     while (it != this->_bans_list.end())
     {
-        if (*it == user)
+        if (*it == client.get_nick())
             return true;
         it++;
     }
     return false;
 }
+
+bool Channel::is_member(Client &client)
+{
+    std::vector<std::string>::iterator it = this->members.begin();
+    while (it != this->members.end())
+    {
+        if (*it == client.get_nick())
+            return true;
+        it++;
+    }
+    return false;
+}
+
 
 void Channel::broadcast_message(std::string message, std::string sender)
 {

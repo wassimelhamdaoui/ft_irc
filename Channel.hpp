@@ -1,7 +1,10 @@
 #ifndef CHANNEL_HPP
 # define CHANNEL_HPP
 
+#include "Client.hpp"
 #include "headers.hpp"
+
+class Client;
 
 class Channel
 {
@@ -35,11 +38,12 @@ class Channel
 		void set_aut_key(bool aut_key);
 		void set_cannels(std::map<std::string, int> cannels);
 
-		void add_member(std::string member);
-		void ban_user(std::string user);
-		void remove_member(std::string member);
-		void unban_user(std::string user);
-		bool is_banned(std::string user);
+		void add_member(Client &client);
+		void ban_user(Client &client);
+		void remove_member(Client &client);
+		void unban_user(Client &client);
+		bool is_banned(Client &client);
+		bool is_member(Client &client);
 
 		void broadcast_message(std::string message, std::string sender);
 
