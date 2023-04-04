@@ -1,4 +1,4 @@
-HEADER = server.hpp Client.hpp
+HEADER = headers.hpp server.hpp Client.hpp
 CC=c++
 FLAGS= -std=c++98 -Wall -Wextra -Werror
 
