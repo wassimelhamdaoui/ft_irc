@@ -13,8 +13,12 @@ class Channel
 		std::string _pass;
 		std::string _topic;
 		bool  _aut_key;
+		bool _is_private;
+
 		std::vector<std::string> members;
 		std::vector<std::string> _bans_list;
+		std::vector<std::string> _invited_list;
+		std::vector<std::string> _moderators;
 		std::map<std::string, int> cannels;
 
 	public:
@@ -23,7 +27,7 @@ class Channel
 		Channel(std::string name, std::string pass);
 		Channel( Channel const & src );
 
-		/**********  Channel methodes *********/
+		/**********  getters *********/
 		std::string get_name();
 		std::string get_pass();
 		std::string get_topic();
@@ -32,6 +36,7 @@ class Channel
 		std::vector<std::string> get_bans_list();
 		std::map<std::string, int> get_cannels();
 
+		/**********  setters *********/
 		void set_name(std::string name);
 		void set_pass(std::string pass);
 		void set_topic(std::string topic);
@@ -50,6 +55,10 @@ class Channel
 		/**********  operator overload *********/
 
 		Channel & operator=( Channel const & rhs );
+
+		/**********  member functions *********/
+
+		
 
 		/**********  destructor *********/
 		~Channel();

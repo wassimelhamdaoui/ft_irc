@@ -166,7 +166,7 @@ void Channel::broadcast_message(std::string message, std::string sender)
     while (it != this->members.end())
     {
         if (*it != sender)
-            this->cannels[*it] = this->cannels[*it] + 1;
+            send_message(message, *it);
         it++;
     }
 }
