@@ -160,14 +160,26 @@ bool Channel::is_member(Client &client)
 }
 
 
-void Channel::broadcast_message(std::string message, std::string sender)
+bool    Channel::channel_exists(std::string name)
 {
-    std::vector<std::string>::iterator it = this->members.begin();
-    while (it != this->members.end())
+    std::map<std::string, int>::iterator it = this->cannels.begin();
+    while (it != this->cannels.end())
     {
-        if (*it != sender)
-            send_message(message, *it);
+        if (it->first == name)
+            return true;
         it++;
     }
+    return false;
 }
+
+// void Channel::broadcast_message(std::string message, std::string sender)
+// {
+//     std::vector<std::string>::iterator it = this->members.begin();
+//     while (it != this->members.end())
+//     {
+//         if (*it != sender)
+//             send_message(message, *it);
+//         it++;
+//     }
+// }
 

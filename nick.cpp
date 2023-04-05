@@ -18,6 +18,7 @@ bool check_double(std::vector<std::string> vect, std::string str)
 	{
 		for(size_t i = 0; i < vect.size(); i++)
 		{
+			std::cout << vect[i] << std::endl;
 			if(str == vect[i])
 				return true;
 		}

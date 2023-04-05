@@ -58,7 +58,7 @@ class Channel
 
 		/**********  member functions *********/
 
-		
+		bool channel_exists(std::string name);
 
 		/**********  destructor *********/
 		~Channel();

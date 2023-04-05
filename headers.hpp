@@ -24,5 +24,9 @@
 #include <map>
 #include <stack>
 #include <unordered_map>
+# include "Client.hpp"
+# include "Channel.hpp"
+# include "server.hpp"
+
 
 #endif
