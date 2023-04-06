@@ -58,7 +58,8 @@ class Channel
 
 		/**********  member functions *********/
 
-		bool channel_exists(std::string name);
+		bool	channel_exists(std::string name);
+		void	remove_channel(std::string name);
 
 		/**********  destructor *********/
 		~Channel();

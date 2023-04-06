@@ -11,7 +11,7 @@ server::server()
 server::server(int port, std::string pass)
 {
     _port = port;
-    if (_port < 6667 || _port > 7005)
+    if (_port < 6667 || _port > 6672)
         throw std::invalid_argument("port must be between 6667 and 7005");
     this->_pass = pass;
 }

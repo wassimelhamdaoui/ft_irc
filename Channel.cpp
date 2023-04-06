@@ -7,6 +7,7 @@ Channel::Channel(std::string name, std::string pass)
 }
 
 Channel::Channel()
+: _name(""), _pass(""), _topic(""), _aut_key(false)
 {
 }
 
@@ -170,6 +171,20 @@ bool    Channel::channel_exists(std::string name)
         it++;
     }
     return false;
+}
+
+void    Channel::remove_channel(std::string name)
+{
+    std::map<std::string, int>::iterator it = this->cannels.begin();
+    while (it != this->cannels.end())
+    {
+        if (it->first == name)
+        {
+            this->cannels.erase(it);
+            break;
+        }
+        it++;
+    }
 }
 
 // void Channel::broadcast_message(std::string message, std::string sender)
