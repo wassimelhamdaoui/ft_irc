@@ -1,7 +1,6 @@
 #ifndef SERVER_HPP
 # define SERVER_HPP
-
-#include "headers.hpp"
+#define USERLEN 12
 #include "Client.hpp"
 
 class Client;
@@ -12,7 +11,6 @@ class server
 		std::unordered_map<int, std::pair<std::string, bool> > client_data;
 		static int _port;
 		static std::string _pass;
-		std::vector<std::string> _nickname;
 		std::map<int, Client> _map;
 
 		
@@ -37,7 +35,8 @@ class server
 		int				accept_connection(int socket_listen, fd_set *master, int *max_socket);
 		std::string 	pass_response(std::string buff, Client &client);
 		std::string 	nick_response(std::string buff, Client &client);
-
+		std::string 	user_response(std::string buff, Client &client);
+		std::string 	check_authentication(std::string, Client &client);
 		/**********  destructor *********/
 		~server();
 };
@@ -52,6 +51,7 @@ int accept_connection(int socket_listen, fd_set *master, int *max_socket);
 //std::string parse_request(char *read);
 void    parse_request(char *read, int fd);
 std::vector<std::string> ft_split(std::string str, char sep);
+std::string ft_message(std::string a, std::string b, std::string c, int flg);
 
 
 # endif

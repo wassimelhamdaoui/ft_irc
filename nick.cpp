@@ -6,20 +6,22 @@
 /*   By: mabdelba <mabdelba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:22:03 by mabdelba          #+#    #+#             */
-/*   Updated: 2023/04/02 23:33:40 by mabdelba         ###   ########.fr       */
+/*   Updated: 2023/04/06 10:21:02 by mabdelba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server.hpp"
 
-bool check_double(std::vector<std::string> vect, std::string str)
+bool check_double(std::map<int, Client> Map, std::string str)
 {
-	if(vect.size() >= 0)
+	std::map<int, Client>::iterator it;
+	if(Map.size() > 0)
 	{
-		for(size_t i = 0; i < vect.size(); i++)
+		for(it = Map.begin(); it != Map.end(); it++)
 		{
 			std::cout << vect[i] << std::endl;
 			if(str == vect[i])
+			if(it->second.get_nick() == str)
 				return true;
 		}
 	}
@@ -28,8 +30,11 @@ bool check_double(std::vector<std::string> vect, std::string str)
 
 bool check_nickname(std::string nick)
 {
-	if(nick.size() > 9)
-		return false;
+	for(size_t i = 0; nick[i]; i++)
+	{
+		if(!std::isalnum(nick[i]) && nick[i] != '_' && nick[i] != '-' && nick[i] != '.' && nick[i] != '~')
+			return false;
+	}
 	return true;
 }
 
@@ -40,16 +45,26 @@ std::string server::nick_response(std::string buff, Client &client)
 	split = ft_split(buff, ' ');
 	if(client.get_pass() && !split.empty())
 	{
-		if(split[0] != "USER" && split[0] != "NICK")
-			return ("you must enter <NICK> <USER>\n");
-		else if(split[0] == "NICK" && split.size() < 2)
-			return ("<NICK> <nickname> :No nickname given\n");
-		else if(!check_nickname(split[1]))	
-			return ("<client> <nick> :Erroneus nickname\n");
-		else if(check_double(this->_nickname, split[1]))
-			return("<client> <nick> :Nickname is already in use\n");
-		this->_nickname.push_back(split[1]);
-		client.set_nick(split[1]);
+		if(!client.get_auth() && split[0] != "USER" && split[0] != "NICK")
+			return (client.get_nick() + " :You must enter <NICK> <USER>\n");
+		if(split[0] == "NICK")
+		{
+			if(split.size() < 2)
+				return(ft_message("NICK", client.get_nick(), "No nickname given", 1));
+			if(!check_nickname(split[1]))
+				return (ft_message(client.get_nick(), split[1], "Erroneus nickname", 1));
+			if(check_double(this->_map, split[1]))
+				return (ft_message(client.get_nick(), split[1], "Nickname is already in use", 1));
+			// if(check_double(this->_map, split[1]))
+			// 	return(client.get_nick() + " " + split[1] + " :Nickname collision\n");
+			client.set_nick(split[1]);
+			client.set_reg(true);
+			if(!client.get_print() && client.get_auth())
+			{
+				client.set_print(true);
+				return(client.get_nick() +  ": You are successfully regeistred\n");
+			}
+		} 
 	}
-	return ("");
+	return (this->user_response(buff, client));
 }

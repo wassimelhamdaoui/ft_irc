@@ -40,14 +40,11 @@ void    server::parse_request(char *read, int fd)
     Channel channel;
     std::string request(read);
     std::string response;
-    std::vector<std::string> tokens;
-
+    
     if(this->_map.count(fd) <= 0)
         this->_map.insert(std::make_pair(fd, client));
-    // else if (tokens[0] == "NICK" && response == "" && this->_map[fd].get_auth() == true)
-        response = nick_response(request, this->_map[fd]);
-    // else if (tokens[0] == "JOIN" )
-    //     response = join_response(request, this->_map[fd], channel);
+    
+    response = pass_response(request, this->_map[fd]);
     send(fd, response.c_str(), response.size(), 0);
 }
 
