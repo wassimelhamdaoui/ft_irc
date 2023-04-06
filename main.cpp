@@ -5,16 +5,11 @@ void    server::parse_request(char *read, int fd)
     Client client(fd);
     std::string request(read);
     std::string response;
-
+    
     if(this->_map.count(fd) <= 0)
         this->_map.insert(std::make_pair(fd, client));
+    
     response = pass_response(request, this->_map[fd]);
-    // if(response == "")
-    //     response = nick_response(request, this->_map[fd]);
-    // if(this->_map.count(fd) <= 0)
-    //     this->_map.insert(std::make_pair(fd, client));
-    response = pass_response(request, client);
-
     send(fd, response.c_str(), response.size(), 0);
 }
 
