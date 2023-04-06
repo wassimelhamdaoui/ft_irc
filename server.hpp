@@ -18,15 +18,20 @@
 # include<sstream>
 # include <stdexcept>
 #include <stdlib.h>
+#include<map>
+#include<vector>
 #include <vector>
 #include <map>
 #include <stack>
+#include <unordered_map>
 #include "Client.hpp"
 
+class Client;
 
 class server
 {
 	private:
+		std::unordered_map<int, std::pair<std::string, bool> > client_data;
 		static int _port;
 		static std::string _pass;
 		std::vector<std::string> _nickname;
@@ -37,7 +42,7 @@ class server
 		server(/* args */);
 		server(int port, std::string pass);
 
-		/**********  sever methodes *********/
+		/**********  server methodes *********/
 
 		std::string		get_pass();
 		int				get_port();

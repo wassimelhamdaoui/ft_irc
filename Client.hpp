@@ -13,8 +13,8 @@
 #ifndef CLIENT_HPP
 # define CLIENT_HPP
 
-# include <iostream>
-# include <string>
+# include "server.hpp"
+
 
 class Client
 {
@@ -43,8 +43,6 @@ class Client
 		std::string _nick;
 		bool		_pass;
 		bool 		_auth;
-
-
 };
 
 #endif /* ********************************************************** CLIENT_H */

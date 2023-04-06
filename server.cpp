@@ -45,19 +45,53 @@ server::~server()
 /*-------------- Server Functions -----------------*/
 
 
-/////////// work heeeeeeere //////////
+/////////// work heeeeeeere //////////////////////////
+
 int server::request_handler(int i, fd_set *master)
 {
-    char read[4608];
-    int bytes_received = recv(i, read, 4608, 0);
-    if (bytes_received < 1){
-        FD_CLR(i, master);
+    char read_buf[4608];
+    int bytes_received = recv(i, read_buf, 4608, 0);
+
+    if (bytes_received == -1) {
         close(i);
-        return (-1);
+        FD_CLR(i, master);
+        client_data.erase(i); // Remove client data from map
+        return -1;
     }
-    read[bytes_received - 2] = '\0';
-    parse_request(read, i);
-    return (1);
+
+    // Append received data to client's data stream
+    std::string& client_stream = client_data[i].first;
+    client_stream.append(read_buf, bytes_received);
+
+    // Check for newline character
+    size_t newline_pos = client_stream.find('\n');
+    if (newline_pos != std::string::npos) {
+        std::string request = client_stream.substr(0, newline_pos);
+        request[request.length() - 1] = '\0';
+
+        parse_request((char *)request.c_str(), i);
+
+        // Remove processed data from client's data stream
+        client_stream.erase(0, newline_pos+1);
+
+        // If CTRL+D was previously received, send back stored data
+        if (client_data[i].second) {
+            // Send stored data
+            std::string stored_data = client_data[i].first;
+            send(i, stored_data.c_str(), stored_data.size(), 0);
+
+            // Clear stored data
+            client_data[i].first.clear();
+            client_data[i].second = false;
+        }
+    }
+
+    // Check for CTRL+D
+    if (bytes_received == 0) {
+        client_data[i].second = true;
+    }
+
+    return 1;
 }
 
 struct addrinfo *server::get_address()
@@ -72,7 +106,7 @@ struct addrinfo *server::get_address()
     std::cout << "configuring local address..." << std::endl;
 
     memset(&hints, 0, sizeof(hints));
-    hints.ai_family = AF_INET;
+    hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
     hints.ai_flags = AI_PASSIVE;
 
@@ -154,30 +188,36 @@ void server::run()
     //  set up our call to select():
     std::cout << "Waiting for connections...\n" << std::endl;
     fd_set reads;
+    // fd_set writes;
+    // FD_ZERO(&writes);
     while (true)
     {
         reads = master;
+
         if (select(max_socket +1, &reads, 0, 0, 0) < 0){
             std::cout << "select failed!" << std::endl;
-            return;
+            return ;
         }
         for (int i = 0; i <= max_socket; i++) {
             if (FD_ISSET(i, &reads)){
                 if (i == socket_listen) {
                     int socket_client = accept_connection(socket_listen, &master, &max_socket);
-                    if ( socket_client< 0)
-                        return;
-                    if (fcntl(socket_client, F_SETFL, O_NONBLOCK) < 0)
-                    {
-                        std::cout << "fcntl() failed!" << std::endl;
-                        return;
-                    }
+                   // FD_SET(socket_client, &writes);
+                    if ( socket_client < 0)
+                        return ;
                 }
                 else{
                     if (request_handler(i, &master) < 0)
                         continue;
                 }
             }
+            // else{
+            //     if (FD_ISSET(i, &writes)){
+            //         continue;
+            //         // if (response_handler(i, &master) < 0)
+            //         //     continue;
+            //     }
+            // }
         } 
     }
     close(socket_listen);

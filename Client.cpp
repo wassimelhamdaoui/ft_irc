@@ -12,19 +12,13 @@
 
 #include "Client.hpp"
 
-/*
-** ------------------------------- CONSTRUCTOR --------------------------------
-*/
 
-Client::Client(): _fd(0), _nick(""),_pass(false),_auth(false)
+Client::Client(): _fd(0), _nick(""), _pass(false),_auth(false)
 {
 }
-
-Client::Client(int fd): _fd(fd), _nick(""),_pass(false),_auth(false)
+Client::Client(int fd): _fd(fd), _nick(""), _pass(false), _auth(false)
 {
 }
-
-
 Client::Client( const Client & src )
 {
 	*this = src;
@@ -102,5 +96,7 @@ void	Client::set_auth(bool auth)
 	this->_auth = auth;
 }
 
+
+/* ************************************************************************** */
 
 /* ************************************************************************** */
