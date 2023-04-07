@@ -4,11 +4,10 @@
 class Channel
 {
 	private:
-	std::string _name;
-	std::string _pass;
-	bool  _aut_key;
-	std::map<std::string, int> cannels;
-
+	std::string _name;//channel name
+	std::string _pass;//password
+	bool  		_key;//true if channel has a key
+	std::map<int, Client> _clients;//fd, client
 	public:
 
 		Channel();

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabdelba <mabdelba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: waelhamd <waelhamd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:22:15 by mabdelba          #+#    #+#             */
-/*   Updated: 2023/04/02 20:22:16 by mabdelba         ###   ########.fr       */
+/*   Updated: 2023/04/06 09:47:51 by waelhamd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,20 @@ void	Client::set_auth(bool auth)
 	this->_auth = auth;
 }
 
+void	Client::set_channel(std::string channel)
+{
+	this->_channels.push_back(channel);
+}
+
+bool	Client::get_channel(std::string channel)
+{
+	for (size_t i = 0; i < this->_channels.size(); i++)
+	{
+		if (this->_channels[i] == channel)
+			return true;
+	}
+	return false;
+}
 
 /* ************************************************************************** */
 

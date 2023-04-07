@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabdelba <mabdelba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: waelhamd <waelhamd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:22:12 by mabdelba          #+#    #+#             */
-/*   Updated: 2023/04/02 20:22:13 by mabdelba         ###   ########.fr       */
+/*   Updated: 2023/04/06 09:58:55 by waelhamd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define CLIENT_HPP
 
 # include "server.hpp"
+#define MAX_CLIENTS 1024
+#define MAX_CHANNELS 20
 
 
 class Client
@@ -36,13 +38,17 @@ class Client
 		void	set_nick(std::string nick);
 		void	set_pass(bool pass);
 		void	set_auth(bool auth);
-
+		void	set_channel(std::string channel);
+		bool	get_channel(std::string channel);
+		// std::string get_user() const;
+		
 
 	private:
 		int 		_fd;
 		std::string _nick;
 		bool		_pass;
 		bool 		_auth;
+		std::vector<std::string> _channels;
 };
 
 #endif /* ********************************************************** CLIENT_H */

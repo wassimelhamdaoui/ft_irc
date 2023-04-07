@@ -25,18 +25,19 @@
 #include <stack>
 #include <unordered_map>
 #include "Client.hpp"
+#include "Channel.hpp"
 
 class Client;
+class Channel;
 
 class server
 {
 	private:
-		std::unordered_map<int, std::pair<std::string, bool> > client_data;
-		static int _port;
-		static std::string _pass;
-		std::vector<std::string> _nickname;
-		std::map<int, Client> _map;
-
+		std::unordered_map<int, std::pair<std::string, bool> > 		client_data;
+		static int 													_port;
+		static std::string 											_pass;
+		std::map<int, Client>										_map;//fd, client
+		std::map<std::string, Channel>								_channels;//channel name, channel
 		
 	public:
 		server(/* args */);
@@ -57,8 +58,12 @@ class server
 		int 			create_socket(struct addrinfo *bind_adress);
 		bool			bind_and_listen(int socket_listen, struct addrinfo *bind_adress);
 		int				accept_connection(int socket_listen, fd_set *master, int *max_socket);
+		/***********  responses ****************/
 		std::string 	pass_response(std::string buff, Client &client);
 		std::string 	nick_response(std::string buff, Client &client);
+		std::string 	user_response(std::string buff, Client &client);
+		std::string 	join_response(std::string buff, Client &client);
+
 
 		/**********  destructor *********/
 		~server();
