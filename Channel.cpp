@@ -187,6 +187,41 @@ void    Channel::remove_channel(std::string name)
     }
 }
 
+bool    Channel::is_moderator(Client &client)
+{
+    std::vector<std::string>::iterator it = this->_moderators.begin();
+    while (it != this->_moderators.end())
+    {
+        if (*it == client.get_nick())
+            return true;
+        it++;
+    }
+}
+
+void    Channel::add_moderator(Client &client)
+{
+    this->_moderators.push_back(client.get_nick());
+}
+
+void   Channel::remove_moderator(Client &client)
+{
+    std::vector<std::string>::iterator it = this->_moderators.begin();
+    while (it != this->_moderators.end())
+    {
+        if (*it == client.get_nick())
+        {
+            this->_moderators.erase(it);
+            break;
+        }
+        it++;
+    }
+}
+
+void    Channel::clear_topic()
+{
+    this->_topic = "";
+}
+
 // void Channel::broadcast_message(std::string message, std::string sender)
 // {
 //     std::vector<std::string>::iterator it = this->members.begin();

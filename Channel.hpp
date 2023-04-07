@@ -60,6 +60,10 @@ class Channel
 
 		bool	channel_exists(std::string name);
 		void	remove_channel(std::string name);
+		bool	is_moderator(Client &client);
+		void	add_moderator(Client &client);
+		void	remove_moderator(Client &client);
+		void	clear_topic();
 
 		/**********  destructor *********/
 		~Channel();

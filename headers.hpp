@@ -30,5 +30,6 @@
 # include "server.hpp"
 # include "Data.hpp"
 
+bool has_comma(std::string str);
 
 #endif

@@ -1,15 +1,5 @@
 #include "headers.hpp"
 
-bool has_comma(std::string str)
-{
-    for (size_t i = 0; i < str.size(); i++)
-    {
-        if (str[i] == ',')
-            return true;
-    }
-    return false;
-}
-
 std::string part_response(std::string request, Client &client, Channel &channel)
 {
     std::vector<std::string> tokens;

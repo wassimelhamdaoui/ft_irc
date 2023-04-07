@@ -9,3 +9,13 @@ bool is_valid_arg(int ac, char **av)
     }
     return (true);
 }
+
+bool has_comma(std::string str)
+{
+    for (size_t i = 0; i < str.size(); i++)
+    {
+        if (str[i] == ',')
+            return true;
+    }
+    return false;
+}
