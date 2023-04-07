@@ -6,7 +6,7 @@
 /*   By: waelhamd <waelhamd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 08:05:10 by waelhamd          #+#    #+#             */
-/*   Updated: 2023/04/07 07:42:59 by waelhamd         ###   ########.fr       */
+/*   Updated: 2023/04/07 08:02:57 by waelhamd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,17 +60,50 @@ std::string join_request(std::string buff, Client &client)
 						mychannel.set_name(names[i]);
 						//set topic
 						//set mode
+						//set aut_key
 						if(key.size() > i)
 						{
-							mychannel.set_key(key[i]);	
+							mychannel.set_key(key[i]);
+							mychannel.set_aut_key(true);
 						}
-						
+						this->_channels[names[i]] = mychannel;
 					}
-					this->_channels[names[i]].push_back(client);
-	
+					//check if key is correct
+					//check if user is in ban list
+					//check if user is in invite list
+					//check if user is in quiet list
+					//check if user is in operator list
+					
+
+					
+					else if(this->_channels[names[i]].get_aut_key())
+					{
+						if(key.size() <= i)
+							return ("475 " + names[i] + " :Cannot join channel (+k)\n");
+						else if(this->_channels[names[i]].get_key() != key[i])
+							return ("475 " + names[i] + " :Cannot join channel (+k)\n");
+					}
+					this->_channels[names[i]].add_member(client);
+					response = "JOIN " + names[i] + " " + client.get_nick();
+					this->_channels[names[i]].send_to_all(response);
+					if(this->_channels[names[i]].get_topic() != "")
+						response = "332 " + names[i] + " :" + this->_channels[names[i]].get_topic() + " " + client.get_nick();
+					else
+						response = "331 " + names[i] + " :No topic is set " + client.get_nick();
+					this->_channels[names[i]].send_to_all(response);
+					response = "353 " + names[i] + " :=" + names[i] + " " + this->_channels[names[i]].get_members() + " " + client.get_nick();
+					this->_channels[names[i]].send_to_all(response);
+					response = "366 " + names[i] + " :End of /NAMES list " + client.get_nick();
+					this->_channels[names[i]].send_to_all(response);
+					
 				}
+				if(i == names.size() - 1)
+					return ("");
 			}
+			else
+				return ("461 JOIN :Not enough parameters\n");
 		}
+	
 	}
 	return ("");
 }
