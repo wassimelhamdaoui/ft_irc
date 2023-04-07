@@ -20,8 +20,6 @@
 #include <stdlib.h>
 #include<map>
 #include<vector>
-#include <vector>
-#include <map>
 #include <stack>
 #include <unordered_map>
 # include <algorithm>
