@@ -1,8 +1,7 @@
 #ifndef SERVER_HPP
 # define SERVER_HPP
+
 #define USERLEN 12
-#include "Client.hpp"
-#include "Channel.hpp"
 #include "headers.hpp"
 
 class Client;

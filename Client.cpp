@@ -6,11 +6,11 @@
 /*   By: waelhamd <waelhamd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:22:15 by mabdelba          #+#    #+#             */
-/*   Updated: 2023/04/07 05:46:11 by waelhamd         ###   ########.fr       */
+/*   Updated: 2023/04/07 06:10:42 by waelhamd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Client.hpp"
+#include "headers.hpp"
 
 
 Client::Client(): _fd(0), _nick("unknown"),_userName("userName"), _pass(false), _reg(false),_auth(false)

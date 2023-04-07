@@ -1,9 +1,6 @@
 #ifndef DATA_HPP
 # define DATA_HPP
 
-#include"Channel.hpp"
-#include"Client.hpp"
-#include "server.hpp"
 # include "headers.hpp"
 
 class Channel;

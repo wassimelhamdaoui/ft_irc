@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   pass.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabdelba <mabdelba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: waelhamd <waelhamd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 19:52:15 by mabdelba          #+#    #+#             */
-/*   Updated: 2023/04/06 10:19:09 by mabdelba         ###   ########.fr       */
+/*   Updated: 2023/04/07 06:09:25 by waelhamd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.hpp"
+#include "headers.hpp"
 
 std::vector<std::string> ft_split(std::string str, char sep)
 {

@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabdelba <mabdelba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: waelhamd <waelhamd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:22:03 by mabdelba          #+#    #+#             */
-/*   Updated: 2023/04/06 10:21:02 by mabdelba         ###   ########.fr       */
+/*   Updated: 2023/04/07 06:09:42 by waelhamd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server.hpp"
+#include "headers.hpp"
 
 bool check_double(std::map<int, Client> Map, std::string str)
 {

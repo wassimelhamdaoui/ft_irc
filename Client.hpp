@@ -6,17 +6,15 @@
 /*   By: waelhamd <waelhamd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:22:12 by mabdelba          #+#    #+#             */
-/*   Updated: 2023/04/07 05:46:51 by waelhamd         ###   ########.fr       */
+/*   Updated: 2023/04/07 06:10:35 by waelhamd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CLIENT_HPP
 # define CLIENT_HPP
 
-# include "server.hpp"
 #define MAX_CLIENTS 1024
 #define MAX_CHANNELS 20
-# include "Channel.hpp"
 # include "headers.hpp"
 
 

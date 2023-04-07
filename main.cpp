@@ -1,4 +1,4 @@
-#include "server.hpp"
+#include "headers.hpp"
 
 void    server::parse_request(char *read, int fd)
 {
@@ -8,7 +8,6 @@ void    server::parse_request(char *read, int fd)
     
     if(this->_map.count(fd) <= 0)
         this->_map.insert(std::make_pair(fd, client));
-    
     response = pass_response(request, this->_map[fd]);
     send(fd, response.c_str(), response.size(), 0);
 }
