@@ -1,31 +1,9 @@
 #ifndef SERVER_HPP
 # define SERVER_HPP
-
-#include <iostream>
-#include <sys/socket.h>
-#include <unistd.h>
-#include <sys/types.h> 
-#include <netdb.h>
-#include <arpa/inet.h>
-#include <netinet/in.h>
-#include <signal.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-# include <poll.h>
-# include <sys/select.h>
-# include <string.h>
-# include <string>
-# include<sstream>
-# include <stdexcept>
-#include <stdlib.h>
-#include<map>
-#include<vector>
-#include <vector>
-#include <map>
-#include <stack>
-#include <unordered_map>
+#define USERLEN 12
 #include "Client.hpp"
 #include "Channel.hpp"
+#include "headers.hpp"
 
 class Client;
 class Channel;
@@ -62,9 +40,10 @@ class server
 		std::string 	pass_response(std::string buff, Client &client);
 		std::string 	nick_response(std::string buff, Client &client);
 		std::string 	user_response(std::string buff, Client &client);
-		std::string 	join_response(std::string buff, Client &client);
+		// std::string 	join_response(std::string buff, Client &client);
 
 
+		//std::string 	check_authentication(std::string, Client &client);
 		/**********  destructor *********/
 		~server();
 };
@@ -72,13 +51,11 @@ class server
 bool is_valid_arg(int ac, char **av);
 
 /***** SERVER FUNCTIONS ****/
-int request_handler(int i, fd_set *master);
-int create_socket(struct addrinfo *bind_adress);
+int 	create_socket(struct addrinfo *bind_adress);
 bool    bind_and_listen(int socket_listen, struct addrinfo *bind_adress);
-int accept_connection(int socket_listen, fd_set *master, int *max_socket);
-//std::string parse_request(char *read);
-void    parse_request(char *read, int fd);
+int 	accept_connection(int socket_listen, fd_set *master, int *max_socket);
 std::vector<std::string> ft_split(std::string str, char sep);
+std::string ft_message(std::string a, std::string b, std::string c, int flg);
 
 
 # endif
