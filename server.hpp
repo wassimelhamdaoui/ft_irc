@@ -2,6 +2,7 @@
 # define SERVER_HPP
 #define USERLEN 12
 #include "Client.hpp"
+#include "headers.hpp"
 
 class Client;
 
@@ -44,12 +45,9 @@ class server
 bool is_valid_arg(int ac, char **av);
 
 /***** SERVER FUNCTIONS ****/
-int request_handler(int i, fd_set *master);
-int create_socket(struct addrinfo *bind_adress);
+int 	create_socket(struct addrinfo *bind_adress);
 bool    bind_and_listen(int socket_listen, struct addrinfo *bind_adress);
-int accept_connection(int socket_listen, fd_set *master, int *max_socket);
-//std::string parse_request(char *read);
-void    parse_request(char *read, int fd);
+int 	accept_connection(int socket_listen, fd_set *master, int *max_socket);
 std::vector<std::string> ft_split(std::string str, char sep);
 std::string ft_message(std::string a, std::string b, std::string c, int flg);
 

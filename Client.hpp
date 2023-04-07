@@ -14,6 +14,8 @@
 # define CLIENT_HPP
 
 # include "server.hpp"
+# include "Channel.hpp"
+# include "headers.hpp"
 
 
 class Client

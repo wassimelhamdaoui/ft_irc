@@ -19,8 +19,6 @@ bool check_double(std::map<int, Client> Map, std::string str)
 	{
 		for(it = Map.begin(); it != Map.end(); it++)
 		{
-			std::cout << vect[i] << std::endl;
-			if(str == vect[i])
 			if(it->second.get_nick() == str)
 				return true;
 		}

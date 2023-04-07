@@ -4,7 +4,9 @@
 #include"Channel.hpp"
 #include"Client.hpp"
 #include "server.hpp"
+# include "headers.hpp"
 
+class Channel;
 
 class Data
 {
