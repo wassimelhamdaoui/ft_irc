@@ -6,7 +6,7 @@
 /*   By: waelhamd <waelhamd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 19:52:15 by mabdelba          #+#    #+#             */
-/*   Updated: 2023/04/07 06:09:25 by waelhamd         ###   ########.fr       */
+/*   Updated: 2023/04/08 06:26:17 by waelhamd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,25 +44,19 @@ std::string ft_message(std::string a, std::string b, std::string c, int flg)
 		ret = "<" + a + "> <" + b +">" " :"  + c + "\n";
 	return ret;
 }
-std::string server::pass_response(std::string buff, Client &client)
+
+std::string server::pass_response(std::vector<std::string> split, Client &client)
 {
-	std::vector<std::string> Vect;
-	Vect = ft_split(buff, ' ');
-	if(!client.get_pass() && !Vect.empty())
+	if(!client.get_pass())
 	{
-		if(Vect[0] != "PASS")
-			return("You must enter the password <PASS>\n");
-		size_t param = Vect.size();
-		if(param < 2)
+		if(split.size() < 2)
 			return(ft_message(client.get_nick(), "PASS", "Not enough parameters", 1));
-		if(Vect[1] != this->get_pass())
+		if(split[1] != this->get_pass())
 			return (ft_message(client.get_nick(), "", "Password incorrect", 0));
 		client.set_pass(true);
 		return ("");
 	}
-	else if(!Vect.empty() && Vect[0] == "PASS")
-		return (ft_message(client.get_nick(), "", "You may not reregister", 0));
-	return (nick_response(buff, client));
+	return (ft_message(client.get_nick(), "", "You may not reregister", 0));
 }
 
 

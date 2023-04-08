@@ -6,19 +6,16 @@
 /*   By: waelhamd <waelhamd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 23:33:30 by mabdelba          #+#    #+#             */
-/*   Updated: 2023/04/08 03:00:57 by waelhamd         ###   ########.fr       */
+/*   Updated: 2023/04/08 06:25:51 by waelhamd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "headers.hpp"
 
 
-std::string server::user_response(std::string buff, Client &client)
+std::string server::user_response(std::vector<std::string> split, Client &client)
 {
-	std::vector<std::string> split;
-
-	split = ft_split(buff, ' ');
-	if(split[0] == "USER")
+	if(client.get_pass())
 	{
 		if(client.get_auth())
 			return(ft_message(client.get_nick(), "", "You may not reregister", 0));
@@ -34,17 +31,5 @@ std::string server::user_response(std::string buff, Client &client)
 			return(client.get_nick() +  ": You are successfully regeistred\n");
 		}
 	}
-	
-	return(join_response(buff, client));
+	return("");
 }
-
-
-// std::string server::check_authentication(std::string buff, Client &client)
-// {
-// 	std::vector<std::string> split;
-// 	split = ft_split(buff, ' ');
-// 	if(!split.empty() && split[0] != "NICK")
-// 		return("you must enter your nickname to complete your registration\n");
-// 	if()
-// 	return("");
-// }
