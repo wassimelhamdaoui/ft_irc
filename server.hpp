@@ -34,10 +34,9 @@ class server
 		int 			create_socket(struct addrinfo *bind_adress);
 		bool			bind_and_listen(int socket_listen, struct addrinfo *bind_adress);
 		int				accept_connection(int socket_listen, fd_set *master, int *max_socket);
-		std::string 	pass_response(std::string buff, Client &client);
-		std::string 	nick_response(std::string buff, Client &client);
-		std::string 	user_response(std::string buff, Client &client);
-		std::string 	check_authentication(std::string, Client &client);
+		std::string 	pass_response(std::vector<std::string> split, Client &client);
+		std::string 	nick_response(std::vector<std::string> split, Client &client);
+		std::string 	user_response(std::vector<std::string> split, Client &client);
 		/**********  destructor *********/
 		~server();
 };
