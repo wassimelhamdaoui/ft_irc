@@ -6,7 +6,7 @@
 /*   By: waelhamd <waelhamd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 23:33:30 by mabdelba          #+#    #+#             */
-/*   Updated: 2023/04/07 07:02:25 by waelhamd         ###   ########.fr       */
+/*   Updated: 2023/04/08 03:00:57 by waelhamd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ std::string server::user_response(std::string buff, Client &client)
 		}
 	}
 	
-	return("");
+	return(join_response(buff, client));
 }
 
 

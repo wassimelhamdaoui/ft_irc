@@ -6,104 +6,88 @@
 /*   By: waelhamd <waelhamd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 08:05:10 by waelhamd          #+#    #+#             */
-/*   Updated: 2023/04/07 08:02:57 by waelhamd         ###   ########.fr       */
+/*   Updated: 2023/04/08 06:14:06 by waelhamd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"headers.hpp"
 
-std::vector<std::string> split_buff(std::string str, char sep)
-{
-	std::vector<std::string> res;
-	std::string word;
-	std::stringstream stream(str);
-	size_t pos;
-	getline(stream, word, sep);
-	res.push_back(word);
-	res.push_back(str.substr(word.size() + 1));
-	return (res);
-}
 
-std::string join_request(std::string buff, Client &client)
+std::string server::join_response(std::vector<std::string> split, Client &client)
 {
-	std::vector<std::string> split;
 	std::string channel;
 	std::string response;
+	Channel mychannel;
 	
-	// std::stringstream stream;
-
-	split = split_buff(buff, ' ');
-	if(split[0] == "JOIN" && client.get_print())
+	if(split.size() < 2)
+		return ("461 JOIN :Not enough parameters\n");
+	else if(split.size() >= 2)
 	{
-		if(split.size() < 2)
-			return ("461 JOIN :Not enough parameters\n");
-		else if(split.size() == 2)
+		std::vector<std::string> names;
+		std::vector<std::string> key;
+		names = ft_split(split[1], ',');
+		if(split.size() > 2)
+			key = ft_split(split[1], ',');
+		for(size_t i = 0; i < names.size(); i++)
 		{
-			split = ft_split(split[1], ' ');
-			std::vector<std::string> names;
-			std::vector<std::string> key;
-			names = ft_split(split[0], ',');
-			if(split.size() > 1)
-				key = ft_split(split[1], ',');
-			for(size_t i = 0; i < names.size(); i++)
-			{
-				if(names[i][0] != '#')
-					return ("403 " + names[i] + " :No such channel\n");
-				else if(client.get_channel(names[i]))
-					return ("443 " + names[i] + " :is already on channel\n");
-				else
-				{
-					client.set_channel(names[i]);
-					if(!this->_channels.count(name[i]))
-					{
-						Channel mychannel;
-						mychannel.set_name(names[i]);
-						//set topic
-						//set mode
-						//set aut_key
-						if(key.size() > i)
-						{
-							mychannel.set_key(key[i]);
-							mychannel.set_aut_key(true);
-						}
-						this->_channels[names[i]] = mychannel;
-					}
-					//check if key is correct
-					//check if user is in ban list
-					//check if user is in invite list
-					//check if user is in quiet list
-					//check if user is in operator list
-					
-
-					
-					else if(this->_channels[names[i]].get_aut_key())
-					{
-						if(key.size() <= i)
-							return ("475 " + names[i] + " :Cannot join channel (+k)\n");
-						else if(this->_channels[names[i]].get_key() != key[i])
-							return ("475 " + names[i] + " :Cannot join channel (+k)\n");
-					}
-					this->_channels[names[i]].add_member(client);
-					response = "JOIN " + names[i] + " " + client.get_nick();
-					this->_channels[names[i]].send_to_all(response);
-					if(this->_channels[names[i]].get_topic() != "")
-						response = "332 " + names[i] + " :" + this->_channels[names[i]].get_topic() + " " + client.get_nick();
-					else
-						response = "331 " + names[i] + " :No topic is set " + client.get_nick();
-					this->_channels[names[i]].send_to_all(response);
-					response = "353 " + names[i] + " :=" + names[i] + " " + this->_channels[names[i]].get_members() + " " + client.get_nick();
-					this->_channels[names[i]].send_to_all(response);
-					response = "366 " + names[i] + " :End of /NAMES list " + client.get_nick();
-					this->_channels[names[i]].send_to_all(response);
-					
-				}
-				if(i == names.size() - 1)
-					return ("");
-			}
+			if(names[i][0] != '#')
+				return ("403 " + names[i] + " :No such channel\n");
+			else if(client.get_channel(names[i]))
+				return ("443 " + names[i] + " :is already on channel\n");
 			else
-				return ("461 JOIN :Not enough parameters\n");
+			{
+				client.set_channel(names[i]);
+				if(!this->_channels.count(names[i]))
+				{//if channel does not exist
+					if(key.size() > i)
+					{//if key is provided
+						mychannel = Channel(names[i], key[i], true);
+						mychannel.add_member(client.get_fd());
+						mychannel.add_moderator(client.get_fd());
+						
+					}
+					else
+					{//if key is not provided
+						mychannel = Channel(names[i], "", false);
+						mychannel.add_member(client.get_fd());
+						mychannel.add_moderator(client.get_fd());
+					}
+					this->_channels.insert(std::pair<std::string, Channel>(names[i], mychannel));
+					std::cout<<"channel created"<<std::endl;
+				}
+				else
+				{//if channel exists
+					if(key.size() > i)
+					{//if key is provided
+						if(this->_channels[names[i]].get_pass() == key[i])
+						{
+							this->_channels[names[i]].add_member(client.get_fd());
+							this->_channels[names[i]].add_moderator(client.get_fd());
+						}
+						else
+							return ("475 " + names[i] + " :Cannot join channel (+k)\n");
+					}
+					else
+					{//if key is not provided
+						if(this->_channels[names[i]].get_pass() == "")
+						{
+							this->_channels[names[i]].add_member(client.get_fd());
+							this->_channels[names[i]].add_moderator(client.get_fd());
+						}
+						else
+							return ("475 " + names[i] + " :Cannot join channel (+k)\n");
+					}
+				}
+				//check if user is in ban list
+				//check if user is in invite list
+				//check if user is in quiet list
+				//check if user is in operator list
+				
+			}
 		}
-	
 	}
+	else if(split.size() > 3)
+		return ("461 JOIN :Too many parameters\n");
+	
 	return ("");
 }

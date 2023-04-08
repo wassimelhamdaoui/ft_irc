@@ -39,7 +39,7 @@ class server
 		std::string 	pass_response(std::string buff, Client &client);
 		std::string 	nick_response(std::string buff, Client &client);
 		std::string 	user_response(std::string buff, Client &client);
-		// std::string 	join_response(std::string buff, Client &client);
+		std::string 	join_response(std::string buff, Client &client);
 
 
 		//std::string 	check_authentication(std::string, Client &client);

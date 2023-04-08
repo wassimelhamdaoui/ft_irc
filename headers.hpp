@@ -28,7 +28,5 @@
 # include "Client.hpp"
 # include "Channel.hpp"
 # include "server.hpp"
-# include "Data.hpp"
-
 
 #endif
