@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabdelba <mabdelba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: waelhamd <waelhamd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:22:15 by mabdelba          #+#    #+#             */
-/*   Updated: 2023/04/06 08:45:17 by mabdelba         ###   ########.fr       */
+/*   Updated: 2023/04/07 06:10:42 by waelhamd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "Client.hpp"
+#include "headers.hpp"
 
 
 Client::Client(): _fd(0), _nick("unknown"),_userName("userName"), _pass(false), _reg(false),_auth(false)
@@ -123,6 +123,20 @@ void	Client::set_print(bool print)
 	this->_print = print;
 }
 
+void	Client::set_channel(std::string channel)
+{
+	this->_channels.push_back(channel);
+}
+
+bool	Client::get_channel(std::string channel)
+{
+	for (size_t i = 0; i < this->_channels.size(); i++)
+	{
+		if (this->_channels[i] == channel)
+			return true;
+	}
+	return false;
+}
 
 /* ************************************************************************** */
 

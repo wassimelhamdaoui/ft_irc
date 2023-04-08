@@ -26,8 +26,5 @@
 # include "Client.hpp"
 # include "Channel.hpp"
 # include "server.hpp"
-# include "Data.hpp"
-
-bool has_comma(std::string str);
 
 #endif

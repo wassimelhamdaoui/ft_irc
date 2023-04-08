@@ -64,5 +64,13 @@
         "deque": "cpp",
         "map": "cpp",
         "stack": "cpp"
-    }
+    },
+    "makefile.launchConfigurations": [
+        {
+            "cwd": "/Users/waelhamd/Desktop/ft_irc",
+            "binaryPath": "/Users/waelhamd/Desktop/ft_irc/IRC",
+            "binaryArgs": []
+        }
+    ],
+    "C_Cpp.errorSquiggles": "disabled"
 }

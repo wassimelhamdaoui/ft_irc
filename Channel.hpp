@@ -4,7 +4,7 @@
 #include "Client.hpp"
 #include "headers.hpp"
 
-class Client;
+// class Client;
 
 class Channel
 {
@@ -12,61 +12,31 @@ class Channel
 		std::string _name;
 		std::string _pass;
 		std::string _topic;
-		bool  _aut_key;
-		bool _is_private;
+		bool		_is_private;
+		bool 		invite_only;
 
-		std::vector<std::string> members;
-		std::vector<std::string> _bans_list;
-		std::vector<std::string> _invited_list;
-		std::vector<std::string> _moderators;
-		std::map<std::string, int> cannels;
-
+		std::vector<int>			members;
+		std::vector<int>			_moderators;
+		std::vector<std::string>	_bans_list;
+		std::vector<std::string>	_invited_list;
 	public:
-
+		//constructors
 		Channel();
 		Channel(std::string name, std::string pass);
-		Channel( Channel const & src );
-
-		/**********  getters *********/
-		std::string get_name();
-		std::string get_pass();
-		std::string get_topic();
-		bool get_aut_key();
-		std::vector<std::string> get_members();
-		std::vector<std::string> get_bans_list();
-		std::map<std::string, int> get_cannels();
-
-		/**********  setters *********/
+		Channel(const Channel &copy);
+		Channel &operator=(const Channel &copy);
+		~Channel();
+		//getters
+		std::string get_name() const;
+		std::string get_pass() const;
+		std::string get_topic() const;
+		bool 		get_invite_only() const;
+		bool		get_is_private() const;
+		std::vector<int> get_members() const;
+		//setters
 		void set_name(std::string name);
 		void set_pass(std::string pass);
 		void set_topic(std::string topic);
-		void set_aut_key(bool aut_key);
-		void set_cannels(std::map<std::string, int> cannels);
-
-		void add_member(Client &client);
-		void ban_user(Client &client);
-		void remove_member(Client &client);
-		void unban_user(Client &client);
-		bool is_banned(Client &client);
-		bool is_member(Client &client);
-
-		void broadcast_message(std::string message, std::string sender);
-
-		/**********  operator overload *********/
-
-		Channel & operator=( Channel const & rhs );
-
-		/**********  member functions *********/
-
-		bool	channel_exists(std::string name);
-		void	remove_channel(std::string name);
-		bool	is_moderator(Client &client);
-		void	add_moderator(Client &client);
-		void	remove_moderator(Client &client);
-		void	clear_topic();
-
-		/**********  destructor *********/
-		~Channel();
 
 };
 

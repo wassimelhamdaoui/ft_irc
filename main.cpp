@@ -1,15 +1,49 @@
-#include "server.hpp"
+#include "headers.hpp"
+
+void    ft_replace(std::string &str, char c, std::string rep)
+{
+    size_t pos = str.find(c);
+	while(pos != std::string::npos)
+	{
+		str.replace(pos, 1, rep);
+		pos = str.find('\t');
+	}
+}
+
+std::vector<std::string> modifier(std::string str)
+{
+    std::vector<std::string> split;
+    ft_replace(str, '\t', " ");
+    ft_replace(str, '\r', " ");
+    ft_replace(str, '\n', " ");
+    split = ft_split(str, ' ');
+
+    return split;
+}
 
 void    server::parse_request(char *read, int fd)
 {
     Client client(fd);
     std::string request(read);
     std::string response;
-    
+    std::vector<std::string> split;
+
     if(this->_map.count(fd) <= 0)
         this->_map.insert(std::make_pair(fd, client));
-    
-    response = pass_response(request, this->_map[fd]);
+    split = modifier(request);
+    if(split.empty())
+        response = "";
+    else if(split[0] == "PASS")
+        response = pass_response(split, this->_map[fd]);
+    else if(split[0] == "USER")
+        response = user_response(split, this->_map[fd]);
+    else if(split[0] == "NICK")
+        response = nick_response(split, this->_map[fd]);
+    else if(split[0] == "JOIN" )
+        response = join_response(split, this->_map[fd]);
+    else
+        response = "";
+
     send(fd, response.c_str(), response.size(), 0);
 }
 

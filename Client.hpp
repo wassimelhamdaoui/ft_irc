@@ -3,18 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabdelba <mabdelba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: waelhamd <waelhamd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:22:12 by mabdelba          #+#    #+#             */
-/*   Updated: 2023/04/06 08:44:04 by mabdelba         ###   ########.fr       */
+/*   Updated: 2023/04/07 06:10:35 by waelhamd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CLIENT_HPP
 # define CLIENT_HPP
 
-# include "server.hpp"
-# include "Channel.hpp"
+#define MAX_CLIENTS 1024
+#define MAX_CHANNELS 20
 # include "headers.hpp"
 
 
@@ -43,6 +43,10 @@ class Client
 		void	set_pass(bool pass);
 		void	set_reg(bool reg);
 		void	set_auth(bool auth);
+		void	set_channel(std::string channel);
+		bool	get_channel(std::string channel);
+		// std::string get_user() const;
+		
 		void	set_print(bool print);
 
 
@@ -53,6 +57,7 @@ class Client
 		bool		_pass;
 		bool		_reg;
 		bool 		_auth;
+		std::vector<std::string> _channels;
 		bool 		_print;
 };
 

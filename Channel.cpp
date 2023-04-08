@@ -1,235 +1,112 @@
+#include "headers.hpp"
 #include "Channel.hpp"
+
+//constructors
+Channel::Channel()
+{
+	this->_name = "";
+	this->_pass = "";
+	this->_topic = "";
+	this->_is_private = false;
+	this->invite_only = false;
+}
 
 Channel::Channel(std::string name, std::string pass)
 {
-    this->_name = name;
-    this->_pass = pass;
+	this->_name = name;
+	this->_pass = pass;
+	this->_topic = "";
+	this->invite_only = false;
+	this->_is_private = false;
 }
 
-Channel::Channel()
-: _name(""), _pass(""), _topic(""), _aut_key(false)
+Channel::Channel(const Channel &copy)
 {
+	*this = copy;
 }
 
-Channel::Channel( const Channel & src )
+Channel &Channel::operator=(const Channel &copy)
 {
+	this->_name = copy._name;
+	this->_pass = copy._pass;
+	this->_topic = copy._topic;
+	this->invite_only = copy.invite_only;
+	this->_is_private = copy._is_private;
+	this->members = copy.members;
+	this->_moderators = copy._moderators;
+	this->_bans_list = copy._bans_list;
+	this->_invited_list = copy._invited_list;
+	return (*this);
 }
-
-Channel & Channel::operator=( const Channel & rhs )
-{
-    if ( this != &rhs )
-    {
-        this->_name = rhs._name;
-        this->_pass = rhs._pass;
-        this->_topic = rhs._topic;
-        this->_aut_key = rhs._aut_key;
-        this->members = rhs.members;
-        this->_bans_list = rhs._bans_list;
-        this->cannels = rhs.cannels;
-    }
-    return (*this);
-}
-
 Channel::~Channel()
 {
 }
 
-
-/**********  Channel methodes *********/
-
-std::string Channel::get_name()
+//getters
+std::string Channel::get_name() const
 {
-    return this->_name;
+	return (this->_name);
+}
+std::string Channel::get_pass() const
+{
+	return (this->_pass);
+}
+std::string Channel::get_topic() const
+{
+	return (this->_topic);
+}
+bool 		Channel::get_invite_only() const
+{
+	return (this->invite_only);
+}
+bool		Channel::get_is_private() const
+{
+	return (this->_is_private);
 }
 
-std::string Channel::get_pass()
+std::vector<int> Channel::get_members() const
 {
-    return this->_pass;
+	return std::vector<int>();
 }
 
-std::string Channel::get_topic()
-{
-    return this->_topic;
-}
-
-bool Channel::get_aut_key()
-{
-    return this->_aut_key;
-}
-
-std::vector<std::string> Channel::get_members()
-{
-    return this->members;
-}
-
-std::vector<std::string> Channel::get_bans_list()
-{
-    return this->_bans_list;
-}
-
-std::map<std::string, int> Channel::get_cannels()
-{
-    return this->cannels;
-}
-
+//setters
 void Channel::set_name(std::string name)
 {
-    this->_name = name;
+	this->_name = name;
 }
-
 void Channel::set_pass(std::string pass)
 {
-    this->_pass = pass;
+	this->_pass = pass;
 }
-
 void Channel::set_topic(std::string topic)
 {
-    this->_topic = topic;
+	this->_topic = topic;
 }
-
-void Channel::set_aut_key(bool aut_key)
+void Channel::set_invite_only(bool invite_only)
 {
-    this->_aut_key = aut_key;
+	this->invite_only = invite_only;
 }
-
-void Channel::set_cannels(std::map<std::string, int> cannels)
+void Channel::set_is_private(bool is_private)
 {
-    this->cannels = cannels;
+	this->_is_private = is_private;
 }
 
-void Channel::add_member(Client &client)
+//methods
+void Channel::add_member(int fd)
 {
-    this->members.push_back(client.get_nick());
-    this->cannels[client.get_nick()] = 0;
+	this->members.push_back(fd);
 }
-
-void Channel::ban_user(Client &client)
+void Channel::add_moderator(int fd)
 {
-    this->_bans_list.push_back(client.get_nick());
+	this->_moderators.push_back(fd);
 }
 
-void Channel::remove_member(Client &client)
+bool Channel::is_invited(std::string nick)
 {
-    std::vector<std::string>::iterator it = this->members.begin();
-    while (it != this->members.end())
-    {
-        if (*it == client.get_nick())
-        {
-            this->members.erase(it);
-            break;
-        }
-        it++;
-    }
+	for (size_t i = 0; i < this->_invited_list.size(); i++)
+	{
+		if (this->_invited_list[i] == nick)
+			return true;
+	}
+	return false;
 }
-
-void Channel::unban_user(Client &client)
-{
-    std::vector<std::string>::iterator it = this->_bans_list.begin();
-    while (it != this->_bans_list.end())
-    {
-        if (*it == client.get_nick())
-        {
-            this->_bans_list.erase(it);
-            break;
-        }
-        it++;
-    }
-}
-
-bool Channel::is_banned(Client &client)
-{
-    std::vector<std::string>::iterator it = this->_bans_list.begin();
-    while (it != this->_bans_list.end())
-    {
-        if (*it == client.get_nick())
-            return true;
-        it++;
-    }
-    return false;
-}
-
-bool Channel::is_member(Client &client)
-{
-    std::vector<std::string>::iterator it = this->members.begin();
-    while (it != this->members.end())
-    {
-        if (*it == client.get_nick())
-            return true;
-        it++;
-    }
-    return false;
-}
-
-
-bool    Channel::channel_exists(std::string name)
-{
-    std::map<std::string, int>::iterator it = this->cannels.begin();
-    while (it != this->cannels.end())
-    {
-        if (it->first == name)
-            return true;
-        it++;
-    }
-    return false;
-}
-
-void    Channel::remove_channel(std::string name)
-{
-    std::map<std::string, int>::iterator it = this->cannels.begin();
-    while (it != this->cannels.end())
-    {
-        if (it->first == name)
-        {
-            this->cannels.erase(it);
-            break;
-        }
-        it++;
-    }
-}
-
-bool    Channel::is_moderator(Client &client)
-{
-    std::vector<std::string>::iterator it = this->_moderators.begin();
-    while (it != this->_moderators.end())
-    {
-        if (*it == client.get_nick())
-            return true;
-        it++;
-    }
-}
-
-void    Channel::add_moderator(Client &client)
-{
-    this->_moderators.push_back(client.get_nick());
-}
-
-void   Channel::remove_moderator(Client &client)
-{
-    std::vector<std::string>::iterator it = this->_moderators.begin();
-    while (it != this->_moderators.end())
-    {
-        if (*it == client.get_nick())
-        {
-            this->_moderators.erase(it);
-            break;
-        }
-        it++;
-    }
-}
-
-void    Channel::clear_topic()
-{
-    this->_topic = "";
-}
-
-// void Channel::broadcast_message(std::string message, std::string sender)
-// {
-//     std::vector<std::string>::iterator it = this->members.begin();
-//     while (it != this->members.end())
-//     {
-//         if (*it != sender)
-//             send_message(message, *it);
-//         it++;
-//     }
-// }
-
