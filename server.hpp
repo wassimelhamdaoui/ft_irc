@@ -55,7 +55,8 @@ class server
 
 		/********* part ************************/
 
-		std::string			part1(std::vector<std::string> tokens, Client &client);
+		std::string		part1(std::string token, Client &client);
+		std::string		part_with_reason(std::string token, Client &client, std::string reason);
 
 		/**********  destructor *********/
 		~server();
