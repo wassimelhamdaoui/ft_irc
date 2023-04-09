@@ -15,10 +15,11 @@
 
 std::string server::join_response(std::vector<std::string> split, Client &client)
 {
-	Channel mychannel;
+	
 	
 	// if(!client.get_print())
 	// 	return ("451 :You have not registered\n");
+	Channel mychannel;
 	if(split.size() < 2)
 		return ("461 JOIN :Not enough parameters\n");
 	else if(split.size() >= 2)

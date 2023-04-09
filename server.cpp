@@ -214,3 +214,19 @@ void server::run()
     return;
 }
 
+
+/********************* channel methodes **************/
+
+// remove both key and value
+void server::remove_channel(std::string name)
+{
+    try
+    {
+    _channels.erase(name);
+    }
+    catch(const std::out_of_range& e)
+    {
+    // handle exception here
+    }
+}
+
