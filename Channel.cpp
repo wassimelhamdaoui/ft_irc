@@ -66,7 +66,7 @@ bool		Channel::get_is_private() const
 
 std::vector<int> Channel::get_members() const
 {
-	return std::vector<int>();
+	return this->members;
 }
 
 //setters
