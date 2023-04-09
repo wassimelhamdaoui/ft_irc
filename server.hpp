@@ -14,13 +14,14 @@ class server
 		static int 													_port;
 		static std::string 											_pass;
 		std::map<int, Client>										_map;//fd, client
-
+		static bool 												romoved_channel;
 		std::map<std::string, Channel>								_channels;//channel name, channel
 		
 	public:
 		server(/* args */);
 		server(int port, std::string pass);
-		//server & operator=(const );
+		server(const server & rhs);
+		server & operator=(const server & rhs);
 
 		/**********  server methodes *********/
 
@@ -50,7 +51,11 @@ class server
 
 		/********** channels methodes *************/
 
-		void	remove_channel(std::string name);
+		//bool			remove_channel(std::string name);
+
+		/********* part ************************/
+
+		std::string			part1(std::vector<std::string> tokens, Client &client);
 
 		/**********  destructor *********/
 		~server();

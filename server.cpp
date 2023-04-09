@@ -36,7 +36,20 @@ void    server::set_port(int port)
     this->_port = port;
 }
 
+server::server(const server &copy)
+{
+    *this = copy;
+}
 
+server &server::operator=(const server &copy)
+{
+    if (this != &copy)
+    {
+        this->_port = copy._port;
+        this->_pass = copy._pass;
+    }
+    return (*this);
+}
 
 server::~server()
 {
@@ -217,16 +230,17 @@ void server::run()
 
 /********************* channel methodes **************/
 
-// remove both key and value
-void server::remove_channel(std::string name)
-{
-    try
-    {
-    _channels.erase(name);
-    }
-    catch(const std::out_of_range& e)
-    {
-    // handle exception here
-    }
-}
+
+// bool    server::remove_channel(std::string name)
+// {
+//     std::map<std::string, Channel>::iterator it;
+//     for ( it = _channels.begin(); it != _channels.end(); ++it) {
+//         if (it->second.get_name() == name)
+//         {
+//             _channels.erase(it);
+//             return (true);
+//         }
+//     }
+//     return (false);
+// }
 

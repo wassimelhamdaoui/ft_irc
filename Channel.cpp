@@ -20,6 +20,7 @@ Channel::Channel(std::string name, std::string pass)
 	this->_is_private = false;
 }
 
+
 Channel::~Channel()
 {
 }
