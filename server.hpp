@@ -48,6 +48,7 @@ class server
 		std::string 	user_response(std::vector<std::string> split, Client &client);
 		std::string 	join_response(std::vector<std::string> split, Client &client);
 		std::string 	part_response(std::vector<std::string> tokens, Client &client);
+		std::string 	topic_response(std::vector<std::string> tokens, Client &client);
 
 		/********** channels methodes *************/
 
@@ -57,6 +58,12 @@ class server
 
 		std::string		part1(std::string token, Client &client);
 		std::string		part_with_reason(std::string token, Client &client, std::string reason);
+
+		/********* TOPIC ************************/
+
+		std::string 	clear_topic(std::string token, Client &client);
+		std::string		know_topic(std::string token, Client &client);
+		std::string		set_topic(std::string token, std::string topic, Client &client);
 
 		/**********  destructor *********/
 		~server();

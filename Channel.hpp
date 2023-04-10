@@ -46,6 +46,7 @@ class Channel
 		// for part
 		bool channel_exist(std::map<std::string, Channel> &channels, std::string channel_name);
 		bool is_member(int fd);
+		bool is_moderator(int fd);
 		void remove_member(int fd);
 		void broadcast_message(std::string message, std::string nick, int fd);
 		bool is_empty() const;

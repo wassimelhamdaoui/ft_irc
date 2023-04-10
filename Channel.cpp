@@ -118,6 +118,16 @@ bool Channel::is_member(int fd)
 	return false;
 }
 
+bool Channel::is_moderator(int fd)
+{
+	for (size_t i = 0; i < this->_moderators.size(); i++)
+	{
+		if (this->_moderators[i] == fd)
+			return true;
+	}
+	return false;
+}
+
 void Channel::remove_member(int fd)
 {
 	for (size_t i = 0; i < this->members.size(); i++)

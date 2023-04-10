@@ -43,8 +43,10 @@ void    server::parse_request(char *read, int fd)
         response = join_response(split, this->_map[fd]);
     else if (split[0] == "PART")
         response = part_response(split, this->_map[fd]);
+    else if (split[0] == "TOPIC")
+        response = topic_response(split, this->_map[fd]);
     else
-        response = "";
+        response = "command not found";
 
     send(fd, response.c_str(), response.size(), 0);
 }
