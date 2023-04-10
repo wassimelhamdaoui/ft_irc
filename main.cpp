@@ -21,7 +21,7 @@ std::vector<std::string> modifier(std::string str)
     return split;
 }
 
-void    server::parse_request(char *read, int fd)
+void    server::parse_request(char *read, int fd, fd_set *master)
 {
     Client client(fd);
     std::string request(read);
@@ -45,6 +45,8 @@ void    server::parse_request(char *read, int fd)
         response = part_response(split, this->_map[fd]);
     else if (split[0] == "TOPIC")
         response = topic_response(split, this->_map[fd]);
+    else if (split[0] == "QUIT")
+        quit_response(split, this->_map[fd], master);
     else
         response = "command not found";
 

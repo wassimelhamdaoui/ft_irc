@@ -82,7 +82,7 @@ int server::request_handler(int i, fd_set *master)
         std::string request = client_stream.substr(0, newline_pos);
         request[request.length() - 1] = '\0';
 
-        parse_request((char *)request.c_str(), i);
+        parse_request((char *)request.c_str(), i, master);
 
         // Remove processed data from client's data stream
         client_stream.erase(0, newline_pos+1);

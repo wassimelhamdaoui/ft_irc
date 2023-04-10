@@ -2,7 +2,9 @@ HEADER = headers.hpp server.hpp Client.hpp Channel.hpp
 CC=c++
 FLAGS= -std=c++98 -Wall -Wextra -Werror
 
-SRCS=main.cpp server.cpp helper_func.cpp split.cpp pass.cpp Client.cpp nick.cpp user.cpp Channel.cpp join.cpp Part.cpp Topic.cpp
+SRCS=main.cpp server.cpp helper_func.cpp split.cpp pass.cpp Client.cpp nick.cpp user.cpp Channel.cpp join.cpp Part.cpp Topic.cpp\
+	Quit.cpp
+	
 OBJS=$(SRCS:.cpp=.o)
 NAME=IRC
 

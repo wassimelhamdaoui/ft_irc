@@ -36,7 +36,7 @@ class server
 
 		struct addrinfo *get_address();
 		int             request_handler(int i, fd_set *master);
-		void   			parse_request(char *read, int fd);
+		void   			parse_request(char *read, int fd, fd_set *master);
 		int 			create_socket(struct addrinfo *bind_adress);
 		bool			bind_and_listen(int socket_listen, struct addrinfo *bind_adress);
 		int				accept_connection(int socket_listen, fd_set *master, int *max_socket);
@@ -49,6 +49,7 @@ class server
 		std::string 	join_response(std::vector<std::string> split, Client &client);
 		std::string 	part_response(std::vector<std::string> tokens, Client &client);
 		std::string 	topic_response(std::vector<std::string> tokens, Client &client);
+		void			quit_response(std::vector<std::string> split, Client &client, fd_set *master);
 
 		/********** channels methodes *************/
 
