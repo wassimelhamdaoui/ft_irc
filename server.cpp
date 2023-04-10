@@ -137,6 +137,12 @@ int server::create_socket(struct addrinfo *bind_adress)
         std::cout << "Creating socket failed!" << std::endl;
         return -1;
     }
+    int reuse_addr = 1;
+    if (setsockopt(socket_listen, SOL_SOCKET, SO_REUSEADDR, &reuse_addr, sizeof(reuse_addr)) < 0)
+    {
+        std::cout << "setsockopt(SO_REUSEADDR) failed" << std::endl;
+        return -1;
+    }
     return (socket_listen);
 }
 
