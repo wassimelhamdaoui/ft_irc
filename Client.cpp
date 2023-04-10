@@ -89,6 +89,10 @@ bool Client::get_print() const{
 
 	return this->_print;
 }
+std::vector<std::string> &Client::get_channel(){
+
+	return  _channels;
+}
 
 void	Client::set_fd(int fd){
 
@@ -128,14 +132,32 @@ void	Client::set_channel(std::string channel)
 	this->_channels.push_back(channel);
 }
 
-bool	Client::get_channel(std::string channel)
+bool	Client::check_member(std::string member)
 {
 	for (size_t i = 0; i < this->_channels.size(); i++)
 	{
-		if (this->_channels[i] == channel)
+		if (this->_channels[i] == member)
 			return true;
 	}
 	return false;
+}
+
+
+
+/*********** part ****************/
+
+void	Client::remove_channel(std::string channel)
+{
+	std::vector<std::string>	&chans = get_channel();
+	std::vector<std::string>::iterator it = chans.begin();
+	for (; it != chans.end(); ++it)
+	{
+		if (*it == channel)
+		{
+			chans.erase(it);
+			break;
+		}
+	}
 }
 
 /* ************************************************************************** */

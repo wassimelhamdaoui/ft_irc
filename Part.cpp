@@ -9,10 +9,20 @@ std::string server::part1(std::string token, Client &client)
             return (response = "<" + client.get_nick() + "> <" + token + "> :You're not on that channel\r\n");
         this->_channels[token].remove_member(client.get_fd());
         if (this->_channels[token].get_members().size() == 0)
+        {
             this->_channels.erase(token);
-        // response = client.get_nick() + " has left " + tokens[1] + "\r\n";
-        // if (this->_channels.size() != 0)
-        //     this->_channels[tokens[1]].broadcast_message(response, client.get_nick(), client.get_fd());
+            client.remove_channel(token);
+        }
+        response = client.get_nick() + " has left " + token + "\r\n";
+        if (this->_channels.size() != 0)
+        {
+            this->_channels[token].broadcast_message(response, client.get_nick(), client.get_fd());
+            if (this->_channels[token].get_members().size() == 0)
+            {
+                this->_channels.erase(token);
+                client.remove_channel(token);
+            }
+        }
         response = "";
     }
     else
@@ -22,7 +32,6 @@ std::string server::part1(std::string token, Client &client)
 
 std::string server::part_with_reason(std::string token, Client &client, std::string reason)
 {
-    reason = "";
     std::string response = "";
     if (this->_channels.count(token) > 0)
     {
@@ -30,10 +39,22 @@ std::string server::part_with_reason(std::string token, Client &client, std::str
             return (response = "<" + client.get_nick() + "> <" + token + "> :You're not on that channel\r\n");
         this->_channels[token].remove_member(client.get_fd());
         if (this->_channels[token].get_members().size() == 0)
+        {
+            client.remove_channel(token);
             this->_channels.erase(token);
-        // response = client.get_nick() + " has left " + tokens[1] + "\r\n";
-        // if (this->_channels.size() != 0)
-        //     this->_channels[tokens[1]].broadcast_message(response, client.get_nick(), client.get_fd());
+        }
+        response = client.get_nick() + " has left " + token + " (" + reason + ")\r\n";
+        if (reason.empty())
+            response = client.get_nick() + " has left " + token + "\r\n";
+        if (this->_channels.size() != 0)
+        {
+            this->_channels[token].broadcast_message(response, client.get_nick(), client.get_fd());
+            if (this->_channels[token].get_members().size() == 0)
+            {
+                this->_channels.erase(token);
+                client.remove_channel(token);
+            }
+        }
         response = "";
     }
     else

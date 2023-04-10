@@ -44,9 +44,10 @@ class Client
 		void	set_reg(bool reg);
 		void	set_auth(bool auth);
 		void	set_channel(std::string channel);
-		bool	get_channel(std::string channel);
+		std::vector<std::string>	&get_channel();
 		// std::string get_user() const;
-		
+		bool	check_member(std::string memeber);	
+		void	remove_channel(std::string channel);
 		void	set_print(bool print);
 
 
@@ -57,7 +58,7 @@ class Client
 		bool		_pass;
 		bool		_reg;
 		bool 		_auth;
-		std::vector<std::string> _channels;
+		std::vector<std::string> _channels;//
 		bool 		_print;
 };
 
