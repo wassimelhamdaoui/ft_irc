@@ -20,24 +20,7 @@ Channel::Channel(std::string name, std::string pass)
 	this->_is_private = false;
 }
 
-Channel::Channel(const Channel &copy)
-{
-	*this = copy;
-}
 
-Channel &Channel::operator=(const Channel &copy)
-{
-	this->_name = copy._name;
-	this->_pass = copy._pass;
-	this->_topic = copy._topic;
-	this->invite_only = copy.invite_only;
-	this->_is_private = copy._is_private;
-	this->members = copy.members;
-	this->_moderators = copy._moderators;
-	this->_bans_list = copy._bans_list;
-	this->_invited_list = copy._invited_list;
-	return (*this);
-}
 Channel::~Channel()
 {
 }
@@ -110,3 +93,64 @@ bool Channel::is_invited(std::string nick)
 	}
 	return false;
 }
+
+// for part
+
+bool Channel::channel_exist(std::map<std::string, Channel> &channels, std::string channel_name)
+{
+	std::map<std::string, Channel>::iterator it = channels.begin();
+	std::map<std::string, Channel>::iterator ite = channels.end();
+	for (; it != ite; it++)
+	{
+		if (it->first == channel_name)
+			return true;
+	}
+	return false;
+}
+
+bool Channel::is_member(int fd)
+{
+	for (size_t i = 0; i < this->members.size(); i++)
+	{
+		if (this->members[i] == fd)
+			return true;
+	}
+	return false;
+}
+
+void Channel::remove_member(int fd)
+{
+	for (size_t i = 0; i < this->members.size(); i++)
+	{
+		if (this->members[i] == fd)
+		{
+			this->members.erase(this->members.begin() + i);
+			return;
+		}
+	}
+}
+
+bool	Channel::is_empty() const
+{
+	if(this->get_name().empty())
+		return true;
+	return false;
+	
+}
+
+// send message to all members of channel
+
+void Channel::broadcast_message(std::string message, std::string nick, int fd)
+{
+	for (size_t i = 0; i < this->members.size(); i++)
+	{
+		if (this->members[i] != fd)
+		{
+			std::string msg = nick + ": " + message;
+			send(this->members[i], msg.c_str(), msg.size(), 0);
+		}
+	}
+}
+
+
+

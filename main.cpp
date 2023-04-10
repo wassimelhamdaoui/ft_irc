@@ -41,6 +41,8 @@ void    server::parse_request(char *read, int fd)
         response = nick_response(split, this->_map[fd]);
     else if(split[0] == "JOIN" )
         response = join_response(split, this->_map[fd]);
+    else if (split[0] == "PART")
+        response = part_response(split, this->_map[fd]);
     else
         response = "";
 

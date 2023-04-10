@@ -14,12 +14,14 @@ class server
 		static int 													_port;
 		static std::string 											_pass;
 		std::map<int, Client>										_map;//fd, client
-
+		static bool 												romoved_channel;
 		std::map<std::string, Channel>								_channels;//channel name, channel
 		
 	public:
 		server(/* args */);
 		server(int port, std::string pass);
+		server(const server & rhs);
+		server & operator=(const server & rhs);
 
 		/**********  server methodes *********/
 
@@ -30,17 +32,32 @@ class server
 		void			set_port(int port);
 		void			set_authentication(bool);
 		void        	run();
+
+
 		struct addrinfo *get_address();
 		int             request_handler(int i, fd_set *master);
 		void   			parse_request(char *read, int fd);
 		int 			create_socket(struct addrinfo *bind_adress);
 		bool			bind_and_listen(int socket_listen, struct addrinfo *bind_adress);
 		int				accept_connection(int socket_listen, fd_set *master, int *max_socket);
-		/**********  responses  *********/
+
+		/**********  Commands  *********/
+
 		std::string 	pass_response(std::vector<std::string> split, Client &client);
 		std::string 	nick_response(std::vector<std::string> split, Client &client);
 		std::string 	user_response(std::vector<std::string> split, Client &client);
 		std::string 	join_response(std::vector<std::string> split, Client &client);
+		std::string 	part_response(std::vector<std::string> tokens, Client &client);
+
+		/********** channels methodes *************/
+
+		//bool			remove_channel(std::string name);
+
+		/********* part ************************/
+
+		std::string		part1(std::string token, Client &client);
+		std::string		part_with_reason(std::string token, Client &client, std::string reason);
+
 		/**********  destructor *********/
 		~server();
 };

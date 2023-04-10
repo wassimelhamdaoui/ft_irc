@@ -15,10 +15,11 @@
 
 std::string server::join_response(std::vector<std::string> split, Client &client)
 {
-	Channel mychannel;
+	
 	
 	// if(!client.get_print())
 	// 	return ("451 :You have not registered\n");
+	Channel mychannel;
 	if(split.size() < 2)
 		return ("461 JOIN :Not enough parameters\n");
 	else if(split.size() >= 2)
@@ -32,7 +33,7 @@ std::string server::join_response(std::vector<std::string> split, Client &client
 		{
 			if(names[i][0] != '#' && names[i].length() > 1)
 				return ("403 " + names[i] + " :No such channel\n");
-			else if(client.get_channel(names[i]))
+			else if(client.check_member(names[i]) && this->_channels[names[i]].get_members().size() !=0)
 				return ("443 " + names[i] + " :is already on channel\n");
 			else
 			{
