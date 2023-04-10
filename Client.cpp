@@ -148,14 +148,12 @@ bool	Client::check_member(std::string member)
 
 void	Client::remove_channel(std::string channel)
 {
-	std::vector<std::string>	&chans = get_channel();
-	std::vector<std::string>::iterator it = chans.begin();
-	for (; it != chans.end(); ++it)
+	for (size_t i = 0; i < this->_channels.size(); i++)
 	{
-		if (*it == channel)
+		if (this->_channels[i] == channel)
 		{
-			chans.erase(it);
-			break;
+			this->_channels.erase(this->_channels.begin() + i);
+			return ;
 		}
 	}
 }

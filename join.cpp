@@ -33,7 +33,7 @@ std::string server::join_response(std::vector<std::string> split, Client &client
 		{
 			if(names[i][0] != '#' && names[i].length() > 1)
 				return ("403 " + names[i] + " :No such channel\n");
-			else if(client.check_member(names[i]) && this->_channels[names[i]].get_members().size() !=0)
+			else if(client.check_member(names[i]))
 				return ("443 " + names[i] + " :is already on channel\n");
 			else
 			{

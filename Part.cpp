@@ -16,7 +16,9 @@ std::string server::part1(std::string token, Client &client)
         response = client.get_nick() + " has left " + token + "\r\n";
         if (this->_channels.size() != 0)
         {
-            this->_channels[token].broadcast_message(response, client.get_nick(), client.get_fd());
+            std::vector<int> members = this->_channels[token].get_members();
+            for (size_t i = 0; i < members.size(); i++)
+                send(members[i], response.c_str(), response.size(), 0);
             if (this->_channels[token].get_members().size() == 0)
             {
                 this->_channels.erase(token);
@@ -48,7 +50,9 @@ std::string server::part_with_reason(std::string token, Client &client, std::str
             response = client.get_nick() + " has left " + token + "\r\n";
         if (this->_channels.size() != 0)
         {
-            this->_channels[token].broadcast_message(response, client.get_nick(), client.get_fd());
+            std::vector<int> members = this->_channels[token].get_members();
+            for (size_t i = 0; i < members.size(); i++)
+                send(members[i], response.c_str(), response.size(), 0);
             if (this->_channels[token].get_members().size() == 0)
             {
                 this->_channels.erase(token);

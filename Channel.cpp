@@ -138,6 +138,8 @@ bool	Channel::is_empty() const
 	
 }
 
+
+
 // send message to all members of channel
 
 void Channel::broadcast_message(std::string message, std::string nick, int fd)
