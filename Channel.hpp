@@ -36,6 +36,7 @@ class Channel
 		void set_pass(std::string pass);
 		void set_topic(std::string topic);
 		void set_invite_only(bool invite_only);
+		void set_is_private(bool is_private);
 
 		//methods
 		void add_member(int fd);
