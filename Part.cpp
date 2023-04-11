@@ -8,11 +8,9 @@ std::string server::part1(std::string token, Client &client)
         if (this->_channels[token].is_member(client.get_fd()) == false)
             return (response = "<" + client.get_nick() + "> <" + token + "> :You're not on that channel\r\n");
         this->_channels[token].remove_member(client.get_fd());
+        client.remove_channel(token);
         if (this->_channels[token].get_members().size() == 0)
-        {
             this->_channels.erase(token);
-            client.remove_channel(token);
-        }
         response = client.get_nick() + " has left " + token + "\r\n";
         if (this->_channels.size() != 0)
         {
@@ -20,10 +18,7 @@ std::string server::part1(std::string token, Client &client)
             for (size_t i = 0; i < members.size(); i++)
                 send(members[i], response.c_str(), response.size(), 0);
             if (this->_channels[token].get_members().size() == 0)
-            {
                 this->_channels.erase(token);
-                client.remove_channel(token);
-            }
         }
         response = "";
     }
@@ -40,11 +35,9 @@ std::string server::part_with_reason(std::string token, Client &client, std::str
         if (this->_channels[token].is_member(client.get_fd()) == false)
             return (response = "<" + client.get_nick() + "> <" + token + "> :You're not on that channel\r\n");
         this->_channels[token].remove_member(client.get_fd());
+        client.remove_channel(token);
         if (this->_channels[token].get_members().size() == 0)
-        {
-            client.remove_channel(token);
             this->_channels.erase(token);
-        }
         response = client.get_nick() + " has left " + token + " (" + reason + ")\r\n";
         if (reason.empty())
             response = client.get_nick() + " has left " + token + "\r\n";
@@ -54,10 +47,7 @@ std::string server::part_with_reason(std::string token, Client &client, std::str
             for (size_t i = 0; i < members.size(); i++)
                 send(members[i], response.c_str(), response.size(), 0);
             if (this->_channels[token].get_members().size() == 0)
-            {
                 this->_channels.erase(token);
-                client.remove_channel(token);
-            }
         }
         response = "";
     }
