@@ -19,3 +19,8 @@ bool has_comma(std::string str)
     }
     return false;
 }
+
+void	mysend(int fd, std::string message)
+{
+	send(fd, message.c_str(), message.size(), 0);
+}

@@ -233,20 +233,3 @@ void server::run()
     return;
 }
 
-
-/********************* channel methodes **************/
-
-
-// bool    server::remove_channel(std::string name)
-// {
-//     std::map<std::string, Channel>::iterator it;
-//     for ( it = _channels.begin(); it != _channels.end(); ++it) {
-//         if (it->second.get_name() == name)
-//         {
-//             _channels.erase(it);
-//             return (true);
-//         }
-//     }
-//     return (false);
-// }
-

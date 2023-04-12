@@ -6,7 +6,7 @@
 /*   By: waelhamd <waelhamd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 08:05:10 by waelhamd          #+#    #+#             */
-/*   Updated: 2023/04/12 08:49:01 by waelhamd         ###   ########.fr       */
+/*   Updated: 2023/04/12 13:45:16 by waelhamd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,12 @@
 
 std::string server::join_response(std::vector<std::string> split, Client &client)
 {
+	Channel mychannel;
+
 	if(!client.get_print())
 		return ("451 :You have not registered\n");
-	Channel mychannel;
 	if(split.size() < 2)
-		return ("461 JOIN :Not enough parameters\n");
+		return (": "+client.get_nick()+" 461 JOIN :Not enough parameters\n");
 	else if(split.size() >= 2)
 	{
 		std::vector<std::string> names;
@@ -29,10 +30,10 @@ std::string server::join_response(std::vector<std::string> split, Client &client
 			key = ft_split(split[2], ',');
 		for(size_t i = 0; i < names.size(); i++)
 		{
-			if(names[i][0] != '#' && names[i].length() > 1)
-				return ("403 " + names[i] + " :No such channel\n");
+			if(names[i][0] != '#')
+				return (": " + client.get_nick() + " 403 " + names[i] + " :No such channel\r\n");
 			else if(client.check_member(names[i]))
-				return ("443 " + names[i] + " :is already on channel\n");
+				mysend(client.get_fd(), ": " + client.get_nick() + " 443 " + names[i] + " :is already on channel\r\n");
 			else
 			{
 				if(!this->_channels.count(names[i]))
@@ -59,7 +60,7 @@ std::string server::join_response(std::vector<std::string> split, Client &client
 							//need to notify other users in channel that user has joined
 						}
 						else
-							return ("473 " + names[i] + " :Cannot join channel (+i)\n");
+							mysend(client.get_fd(), ":" + client.get_nick() + " 473 " + names[i] + " :Cannot join channel (+i)\r\n");
 					}
 					else
 					{
@@ -71,7 +72,7 @@ std::string server::join_response(std::vector<std::string> split, Client &client
 								this->_channels[names[i]].add_member(client.get_fd());
 							}
 							else
-								return ("475 " + names[i] + " :Cannot join channel (+k)\n");
+								mysend(client.get_fd(), ":" + client.get_nick() + " 475 " + names[i] + " :Cannot join channel (+k)\r\n");
 						}
 						else
 						{//if key is not provided
@@ -81,7 +82,7 @@ std::string server::join_response(std::vector<std::string> split, Client &client
 								this->_channels[names[i]].add_member(client.get_fd());
 							}
 							else
-								return ("475 " + names[i] + " :Cannot join channel (+k)\n");
+								mysend(client.get_fd(), ":" + client.get_nick() + " 475 " + names[i] + " :Cannot join channel (+k)\r\n");
 						}
 					}
 					
@@ -90,7 +91,7 @@ std::string server::join_response(std::vector<std::string> split, Client &client
 		}
 	}
 	else if(split.size() > 3)
-		return ("461 JOIN :Too many parameters\n");
+		return (": " + client.get_nick() + " 461 JOIN :Too many parameters\n");
 	
 	return ("");
 }
