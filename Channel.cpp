@@ -163,6 +163,3 @@ void Channel::broadcast_message(std::string message, std::string nick, int fd)
 		}
 	}
 }
-
-
-

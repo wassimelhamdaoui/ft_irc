@@ -50,11 +50,10 @@ class server
 		std::string 	part_response(std::vector<std::string> tokens, Client &client);
 		std::string 	topic_response(std::vector<std::string> tokens, Client &client);
 		void			quit_response(std::vector<std::string> split, Client &client, fd_set *master);
-
+		std::string 	privmsg_response(std::string buff, Client &client);
 		/********** channels methodes *************/
-
-		//bool			remove_channel(std::string name);
-
+		void			send_message(int fd, std::string message);
+		
 		/********* part ************************/
 
 		std::string		part1(std::string token, Client &client);
@@ -78,6 +77,4 @@ bool    bind_and_listen(int socket_listen, struct addrinfo *bind_adress);
 int 	accept_connection(int socket_listen, fd_set *master, int *max_socket);
 std::vector<std::string> ft_split(std::string str, char sep);
 std::string ft_message(std::string a, std::string b, std::string c, int flg);
-
-
 # endif
