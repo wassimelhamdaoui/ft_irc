@@ -59,6 +59,8 @@ std::string server::part_with_reason(std::string token, Client &client, std::str
 std::string server::part_response(std::vector<std::string> tokens, Client &client)
 {  
     std::string response = "";
+    if(!client.get_print())
+		return ("451 :You have not registered\n");
     if (tokens[0] == "PART" && tokens.size() > 0)
     {
         if (tokens.size() == 1)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: waelhamd <waelhamd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabdelba <mabdelba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 08:05:10 by waelhamd          #+#    #+#             */
-/*   Updated: 2023/04/08 12:37:53 by waelhamd         ###   ########.fr       */
+/*   Updated: 2023/04/12 06:56:20 by mabdelba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,10 +15,8 @@
 
 std::string server::join_response(std::vector<std::string> split, Client &client)
 {
-	
-	
-	// if(!client.get_print())
-	// 	return ("451 :You have not registered\n");
+	if(!client.get_print())
+		return ("451 :You have not registered\n");
 	Channel mychannel;
 	if(split.size() < 2)
 		return ("461 JOIN :Not enough parameters\n");
@@ -52,7 +50,7 @@ std::string server::join_response(std::vector<std::string> split, Client &client
 				else
 				{//if channel exists
 					//check if the moderator is part of the channel need to chanage moderator
-					if(this->_channels[names[i]].get_invite_only())
+					if(this->_channels[names[i]].get_inviteMode())
 					{
 						if(this->_channels[names[i]].is_invited(client.get_nick()))
 						{

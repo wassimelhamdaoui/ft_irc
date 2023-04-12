@@ -13,7 +13,7 @@ class Channel
 		std::string _pass;
 		std::string _topic;
 		bool		_is_private;
-		bool 		invite_only;
+		bool		_inviteMode;
 
 		std::vector<int>			members;
 		std::vector<int>			_moderators;
@@ -28,19 +28,22 @@ class Channel
 		std::string get_name() const;
 		std::string get_pass() const;
 		std::string get_topic() const;
-		bool 		get_invite_only() const;
+		bool 		get_inviteMode() const;
 		bool		get_is_private() const;
 		std::vector<int> get_members() const;
 		//setters
 		void set_name(std::string name);
 		void set_pass(std::string pass);
 		void set_topic(std::string topic);
-		void set_invite_only(bool invite_only);
+		void set_inviteMode(bool inviteMode);
 		void set_is_private(bool is_private);
 
 		//methods
 		void add_member(int fd);
 		void add_moderator(int fd);
+		void add_invited_list(std::string nick);
+
+
 		bool is_invited(std::string nick);
 
 		// for part

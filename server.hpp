@@ -47,6 +47,7 @@ class server
 		std::string 	nick_response(std::vector<std::string> split, Client &client);
 		std::string 	user_response(std::vector<std::string> split, Client &client);
 		std::string 	join_response(std::vector<std::string> split, Client &client);
+		std::string 	invite_response(std::vector<std::string> split, Client &client);
 		std::string 	part_response(std::vector<std::string> tokens, Client &client);
 		std::string 	topic_response(std::vector<std::string> tokens, Client &client);
 		void			quit_response(std::vector<std::string> split, Client &client, fd_set *master);
@@ -76,8 +77,13 @@ bool is_valid_arg(int ac, char **av);
 int 	create_socket(struct addrinfo *bind_adress);
 bool    bind_and_listen(int socket_listen, struct addrinfo *bind_adress);
 int 	accept_connection(int socket_listen, fd_set *master, int *max_socket);
+
+///****************  utils  ****************////
+
 std::vector<std::string> ft_split(std::string str, char sep);
 std::string ft_message(std::string a, std::string b, std::string c, int flg);
+int getClientFd(std::map<int, Client> map, std::string nickname);
+bool check_inVect(std::vector<int> vect, int value);
 
 
 # endif

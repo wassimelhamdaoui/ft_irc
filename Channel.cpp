@@ -8,7 +8,7 @@ Channel::Channel()
 	this->_pass = "";
 	this->_topic = "";
 	this->_is_private = false;
-	this->invite_only = false;
+	this->_inviteMode = false;
 }
 
 Channel::Channel(std::string name, std::string pass)
@@ -16,7 +16,7 @@ Channel::Channel(std::string name, std::string pass)
 	this->_name = name;
 	this->_pass = pass;
 	this->_topic = "";
-	this->invite_only = false;
+	this->_inviteMode = false;
 	this->_is_private = false;
 }
 
@@ -38,9 +38,9 @@ std::string Channel::get_topic() const
 {
 	return (this->_topic);
 }
-bool 		Channel::get_invite_only() const
+bool 		Channel::get_inviteMode() const
 {
-	return (this->invite_only);
+	return (this->_inviteMode);
 }
 bool		Channel::get_is_private() const
 {
@@ -65,9 +65,9 @@ void Channel::set_topic(std::string topic)
 {
 	this->_topic = topic;
 }
-void Channel::set_invite_only(bool invite_only)
+void Channel::set_inviteMode(bool _inviteMode)
 {
-	this->invite_only = invite_only;
+	this->_inviteMode = _inviteMode;
 }
 void Channel::set_is_private(bool is_private)
 {
@@ -82,6 +82,11 @@ void Channel::add_member(int fd)
 void Channel::add_moderator(int fd)
 {
 	this->_moderators.push_back(fd);
+}
+
+void Channel::add_invited_list(std::string nick)
+{
+	this->_invited_list.push_back(nick);
 }
 
 bool Channel::is_invited(std::string nick)

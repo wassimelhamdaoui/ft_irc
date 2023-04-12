@@ -4,7 +4,7 @@ void server::quit_response(std::vector<std::string> split, Client &client, fd_se
 {
     std::string response;
     std::string message;
-
+    
     if (split.size() == 1)
         message = "Client Quit";
     else

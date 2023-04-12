@@ -45,10 +45,12 @@ void    server::parse_request(char *read, int fd, fd_set *master)
         response = part_response(split, this->_map[fd]);
     else if (split[0] == "TOPIC")
         response = topic_response(split, this->_map[fd]);
+    else if(split[0] == "INVITE")
+        response = invite_response(split, this->_map[fd]);
     else if (split[0] == "QUIT")
         quit_response(split, this->_map[fd], master);
     else
-        response = "command not found";
+        response = "ircserv: command not found\n";
 
     send(fd, response.c_str(), response.size(), 0);
 }
