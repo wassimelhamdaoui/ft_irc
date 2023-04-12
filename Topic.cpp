@@ -4,7 +4,7 @@
 std::string server::clear_topic(std::string token, Client &client)
 {
     if(!client.get_print())
-		return ("451 :You have not registered\n");
+		return (":localhost 451 * TOPIC :You must finish connecting with nickname first.\r\n");
     std::string response = "";
     if (this->_channels.count(token) > 0)
     {

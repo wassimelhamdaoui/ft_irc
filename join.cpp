@@ -16,7 +16,7 @@
 std::string server::join_response(std::vector<std::string> split, Client &client)
 {
 	if(!client.get_print())
-		return ("451 :You have not registered\n");
+		return (":localhost 451 * JOIN :You must finish connecting with nickname first.\r\n");
 	Channel mychannel;
 	if(split.size() < 2)
 		return(":localhost 461 " + client.get_nick() + " " + split[0] + " :Not enough parameters\r\n");
