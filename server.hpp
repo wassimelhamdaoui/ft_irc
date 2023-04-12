@@ -51,11 +51,10 @@ class server
 		std::string 	part_response(std::vector<std::string> tokens, Client &client);
 		std::string 	topic_response(std::vector<std::string> tokens, Client &client);
 		void			quit_response(std::vector<std::string> split, Client &client, fd_set *master);
-
+		std::string 	privmsg_response(std::string buff, Client &client);
 		/********** channels methodes *************/
-
-		//bool			remove_channel(std::string name);
-
+		void			send_message(int fd, std::string message);
+		
 		/********* part ************************/
 
 		std::string		part1(std::string token, Client &client);
