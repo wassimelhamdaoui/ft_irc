@@ -1,5 +1,15 @@
 #include "headers.hpp"
 
+void    welcome_message(int fd, Client &client)
+{
+    std::string message = ":localhost 001 " + client.get_nick() + " :Welcome to IRC Network " + client.get_nick() + " \r\n";
+    send(fd, (char *)message.c_str(), message.length(), 0);
+    message = ":localhost 002 " + client.get_nick() + " :Your host is localhost, running version 1.0\r\n";
+    send(fd, (char *)message.c_str(), message.length(), 0);
+    message = ":localhost 003 " + client.get_nick() + " :This server was created 2023-03-25\r\n";
+    send(fd, (char *)message.c_str(), message.length(), 0);
+}
+
 void    ft_replace(std::string &str, char c, std::string rep)
 {
     size_t pos = str.find(c);
@@ -36,7 +46,11 @@ void    server::parse_request(char *read, int fd, fd_set *master)
     else if(split[0] == "PASS")
         response = pass_response(split, this->_map[fd]);
     else if(split[0] == "USER")
+    {
         response = user_response(split, this->_map[fd]);
+        if (client.get_print() == true)
+            welcome_message(client.get_fd(), client);
+    }
     else if(split[0] == "NICK")
         response = nick_response(split, this->_map[fd]);
     else if(split[0] == "JOIN" )
@@ -46,7 +60,12 @@ void    server::parse_request(char *read, int fd, fd_set *master)
     else if (split[0] == "TOPIC")
         response = topic_response(split, this->_map[fd]);
     else if (split[0] == "QUIT")
-        quit_response(split, this->_map[fd], master);
+    {
+       // if (client.get_print() == true)
+            response = quit_response(split, this->_map[fd], master);
+        // else
+        //     response = client.get_nick() + " :You have not registered\r\n";
+    }
     else
         response = "command not found";
 

@@ -68,6 +68,8 @@ std::string server::set_topic(std::string token, std::string topic, Client &clie
 
 std::string server::topic_response(std::vector<std::string> tokens, Client &client)
 {
+    if(!client.get_print())
+		return ("451 :You have not registered\n");
     std::string response = "";
 
     // clear topic

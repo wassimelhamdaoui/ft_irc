@@ -49,7 +49,7 @@ class server
 		std::string 	join_response(std::vector<std::string> split, Client &client);
 		std::string 	part_response(std::vector<std::string> tokens, Client &client);
 		std::string 	topic_response(std::vector<std::string> tokens, Client &client);
-		void			quit_response(std::vector<std::string> split, Client &client, fd_set *master);
+		std::string		quit_response(std::vector<std::string> split, Client &client, fd_set *master);
 
 		/********** channels methodes *************/
 

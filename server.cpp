@@ -211,7 +211,7 @@ void server::run()
     {
         reads = master;
 
-        if (select(max_socket +1, &reads, 0, 0, 0) < 0){
+        if (select(max_socket + 1, &reads, 0, 0, 0) < 0){
             std::cout << "select failed!" << std::endl;
             return ;
         }
