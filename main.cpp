@@ -60,12 +60,7 @@ void    server::parse_request(char *read, int fd, fd_set *master)
     else if (split[0] == "TOPIC")
         response = topic_response(split, this->_map[fd]);
     else if (split[0] == "QUIT")
-    {
-       // if (client.get_print() == true)
             response = quit_response(split, this->_map[fd], master);
-        // else
-        //     response = client.get_nick() + " :You have not registered\r\n";
-    }
     else
         response = "command not found";
 

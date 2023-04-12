@@ -16,7 +16,10 @@ std::string server::part1(std::string token, Client &client)
         {
             std::vector<int> members = this->_channels[token].get_members();
             for (size_t i = 0; i < members.size(); i++)
-                send(members[i], response.c_str(), response.size(), 0);
+            {
+                if (members[i] != client.get_fd())
+                    send(members[i], response.c_str(), response.size(), 0);
+            }
             if (this->_channels[token].get_members().size() == 0)
                 this->_channels.erase(token);
         }
@@ -45,7 +48,10 @@ std::string server::part_with_reason(std::string token, Client &client, std::str
         {
             std::vector<int> members = this->_channels[token].get_members();
             for (size_t i = 0; i < members.size(); i++)
-                send(members[i], response.c_str(), response.size(), 0);
+            {
+                if (members[i] != client.get_fd())
+                    send(members[i], response.c_str(), response.size(), 0);
+            }
             if (this->_channels[token].get_members().size() == 0)
                 this->_channels.erase(token);
         }
