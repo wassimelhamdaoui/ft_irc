@@ -1,13 +1,5 @@
 # include "headers.hpp"
 
-bool    has_semi_colon(std::string str)
-{
-    size_t pos = str.find(":");
-    if (pos != std::string::npos)
-        return (true);
-    return (false);
-}
-
 std::string server::quit_response(std::vector<std::string> split, Client &client, fd_set *master)
 {
     std::string response;

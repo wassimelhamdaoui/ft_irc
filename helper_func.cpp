@@ -19,3 +19,11 @@ bool has_comma(std::string str)
     }
     return false;
 }
+
+bool    has_semi_colon(std::string str)
+{
+    size_t pos = str.find(":");
+    if (pos != std::string::npos)
+        return (true);
+    return (false);
+}
