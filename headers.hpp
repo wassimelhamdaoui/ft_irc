@@ -27,6 +27,7 @@
 # include "Channel.hpp"
 # include "server.hpp"
 
-bool has_comma(std::string str);
+bool    has_comma(std::string str);
+bool    has_semi_colon(std::string str);
 
 #endif

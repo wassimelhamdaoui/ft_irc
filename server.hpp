@@ -50,8 +50,9 @@ class server
 		std::string 	invite_response(std::vector<std::string> split, Client &client);
 		std::string 	part_response(std::vector<std::string> tokens, Client &client);
 		std::string 	topic_response(std::vector<std::string> tokens, Client &client);
-		void			quit_response(std::vector<std::string> split, Client &client, fd_set *master);
 		std::string 	privmsg_response(std::string buff, Client &client);
+		std::string		quit_response(std::vector<std::string> split, Client &client, fd_set *master);
+
 		/********** channels methodes *************/
 		void			send_message(int fd, std::string message);
 		
