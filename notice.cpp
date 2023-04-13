@@ -6,13 +6,13 @@
 /*   By: waelhamd <waelhamd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 10:17:42 by waelhamd          #+#    #+#             */
-/*   Updated: 2023/04/12 13:17:39 by waelhamd         ###   ########.fr       */
+/*   Updated: 2023/04/13 06:06:41 by waelhamd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "headers.hpp"
 
-void 	split_command(std::string buff, std::vector<std::string> &split)
+static void 	split_command(std::string buff, std::vector<std::string> &split)
 {
 	std::vector<std::string> tmp;
 	size_t pos = buff.find(":");
