@@ -64,7 +64,9 @@ void    server::parse_request(char *read, int fd, fd_set *master)
     else if (split[0] == "QUIT")
             response = quit_response(split, this->_map[fd], master);
     else if (split[0] == "PRIVMSG")
-        response = privmsg_response(request, this->_map[fd]);
+       response = privmsg_response(request, this->_map[fd]);
+    else if(split[0] == "NOTICE")
+       response = notice_response(request, this->_map[fd]);
     else
         response = "ircserv: command not found\n";
 

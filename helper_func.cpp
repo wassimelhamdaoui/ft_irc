@@ -27,3 +27,9 @@ bool    has_semi_colon(std::string str)
         return (true);
     return (false);
 }
+
+void	mysend(int fd, std::string message)
+{
+	send(fd, message.c_str(), message.size(), 0);
+
+}

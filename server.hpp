@@ -53,6 +53,7 @@ class server
 		std::string 	privmsg_response(std::string buff, Client &client);
 		std::string		quit_response(std::vector<std::string> split, Client &client, fd_set *master);
 
+		std::string 	notice_response(std::string buff, Client &Client);
 		/********** channels methodes *************/
 		void			send_message(int fd, std::string message);
 		
@@ -84,6 +85,6 @@ std::vector<std::string> ft_split(std::string str, char sep);
 std::string ft_message(std::string a, std::string b, std::string c, int flg);
 int getClientFd(std::map<int, Client> map, std::string nickname);
 bool check_inVect(std::vector<int> vect, int value);
-
+void	mysend(int fd, std::string message);
 
 # endif

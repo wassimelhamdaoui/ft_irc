@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   invite.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabdelba <mabdelba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: waelhamd <waelhamd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 06:32:27 by mabdelba          #+#    #+#             */
-/*   Updated: 2023/04/12 08:25:42 by mabdelba         ###   ########.fr       */
+/*   Updated: 2023/04/12 13:02:00 by waelhamd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "headers.hpp"
+#include "server.hpp"
 
 
 bool check_inVect(std::vector<int> vect, int value)
