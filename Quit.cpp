@@ -6,7 +6,7 @@ std::string server::quit_response(std::vector<std::string> split, Client &client
     std::string name = client.get_nick();
     if (name == "")
         name = "0.0.0.0";
-    if (split.size() == 1)
+    if (split.size() == 2 && split[1] == ":")
         response = "ERROR :Closing Link: 0.0.0.0 (Quit: )\r\n";
     else if (split.size() > 1)
     {

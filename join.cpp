@@ -1,17 +1,4 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   join.cpp                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: waelhamd <waelhamd@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/06 08:05:10 by waelhamd          #+#    #+#             */
-/*   Updated: 2023/04/13 09:39:56 by waelhamd         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include"headers.hpp"
-
 
 std::string server::join_response(std::vector<std::string> split, Client &client)
 {
@@ -19,7 +6,7 @@ std::string server::join_response(std::vector<std::string> split, Client &client
 
 	if(!client.get_print())
 		return (":localhost 451 * JOIN :You must finish connecting with nickname first.\r\n");
-	if(split.size() < 2)
+	if(split.size() == 2 && split[1] == "#")
 		return(":localhost 461 " + client.get_nick() + " " + split[0] + " :Not enough parameters\r\n");
 	else if(split.size() >= 2)
 	{
@@ -31,7 +18,7 @@ std::string server::join_response(std::vector<std::string> split, Client &client
 		for(size_t i = 0; i < names.size(); i++)
 		{
 			if(names[i][0] != '#')
-				mysend(client.get_fd(), ":localhost 403 " + client.get_nick() + " JOIN " + ":No such channel\r\n");
+				mysend(client.get_fd(), ":localhost 403 " + client.get_nick() + " " + names[i] + " :No such channel\r\n");
 			else if(client.check_member(names[i]))
 				mysend(client.get_fd(), ":localhost 443 " + client.get_nick() + " " + names[i] + ":is already on channel\r\n");
 			else

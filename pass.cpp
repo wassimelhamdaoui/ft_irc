@@ -50,13 +50,13 @@ std::string server::pass_response(std::vector<std::string> split, Client &client
 	if(!client.get_pass())
 	{
 		if(split.size() < 2)
-			return(":localhost 461 PASS :Not enough parameters\r\n");
+			return(":localhost 461 * PASS :Not enough parameters\r\n");
 		if(split[1] != this->get_pass())
-			return (":localhost 464 PASS :Password incorrect\r\n");
+			return (":localhost 464 * PASS :Password incorrect\r\n");
 		client.set_pass(true);
 		return ("");
 	}
-	return (":localhost 462 PASS :You may not reregister\r\n");
+	return (":localhost 462 * PASS :You may not reregister\r\n");
 }
 
 
