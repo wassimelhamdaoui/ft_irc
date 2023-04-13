@@ -62,8 +62,8 @@ server::~server()
 
 int server::request_handler(int i, fd_set *master)
 {
-    char read_buf[4608];
-    int bytes_received = recv(i, read_buf, 4608, 0);
+    char read_buf[512];
+    int bytes_received = recv(i, read_buf, 512, 0);
 
     if (bytes_received == -1) {
         close(i);
@@ -77,10 +77,10 @@ int server::request_handler(int i, fd_set *master)
     client_stream.append(read_buf, bytes_received);
 
     // Check for newline character
-    size_t newline_pos = client_stream.find('\n');
+    size_t newline_pos = client_stream.find("\r\n");
     if (newline_pos != std::string::npos) {
         std::string request = client_stream.substr(0, newline_pos);
-        request[request.length() - 1] = '\0';
+        request[request.length()] = '\0';
 
         parse_request((char *)request.c_str(), i, master);
 

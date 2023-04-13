@@ -41,11 +41,11 @@ std::string server::nick_response(std::vector<std::string>  split, Client &clien
 	if(client.get_pass())
 	{
 		if(split.size() < 2)
-			return(":localhost 431 :No nickname given\r\n");
+			return(":localhost 431 NICK :No nickname given\r\n");
 		if(!check_nickname(split[1]))
-			return (":localhost 432 :Erroneous nickname\r\n");
+			return (":localhost 432 NICK :Erroneous nickname\r\n");
 		if(check_double(this->_map, split[1]))
-			return (":localhost 433  :Nickname already in use\r\n");
+			return (":localhost 433  NICK :Nickname already in use\r\n");
 		// if(check_double(this->_map, split[1]))
 		// 	return(client.get_nick() + " " + split[1] + " :Nickname collision\n");
 		client.set_nick(split[1]);
