@@ -41,9 +41,9 @@ std::string server::part_with_reason(std::string token, Client &client, std::str
         client.remove_channel(token);
         if (this->_channels[token].get_members().size() == 0)
             this->_channels.erase(token);
-        response = ":" + client.get_nick() + " PART " + token + " :" + reason + "\r\n";
+        response = ":" + client.get_nick() + " PART :" + token + " :\"" + reason + "\"\r\n";
         if (reason.empty())
-            response = ":" + client.get_nick() + " PART " + token + "\r\n";
+            response = ":" + client.get_nick() + " PART :" + token + "\r\n";
         if (this->_channels.size() != 0)
         {
             std::vector<int> members = this->_channels[token].get_members();
@@ -58,21 +58,19 @@ std::string server::part_with_reason(std::string token, Client &client, std::str
         response = "";
     }
     else
-        return (response = ":localhost 403 " + client.get_nick() + " PART " + " :No such channel\r\n");
+        return (response = ":localhost 403 " + client.get_nick() + " " + token + " :No such channel\r\n");
     return (response);
 }
 
 std::string server::part_response(std::vector<std::string> tokens, Client &client)
 {
-    // if(!client.get_print())
-	// 	return (":localhost 451 * PART :You must finish connecting with nickname first.\r\n");
-    std::string response = "";
     if(!client.get_print())
-		return ("451 :You have not registered\n");
+		return (":localhost 451 * PART :You must finish connecting with nickname first.\r\n");
+    std::string response = "";
     if (tokens[0] == "PART" && tokens.size() > 0)
     {
-        if (tokens.size() == 1)
-            return (response = ":localhost 461 " + client.get_nick() + " " + tokens[0] + " :Not enough parameters\r\n");
+        if (tokens.size() == 2 && tokens[1] == ":")
+            return (response = ":localhost 461 " + client.get_nick() + " PART " + " :Not enough parameters\r\n");
         else if (tokens.size() == 2)
         {
             if (has_comma(tokens[1]))

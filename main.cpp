@@ -33,6 +33,7 @@ std::vector<std::string> modifier(std::string str)
 
 void    server::parse_request(char *read, int fd, fd_set *master)
 {
+    //std::cout << read << std::endl;
     Client client(fd);
     std::string request(read);
     std::string response;
@@ -64,8 +65,7 @@ void    server::parse_request(char *read, int fd, fd_set *master)
     else if(split[0] == "NOTICE")
        response = notice_response(request, this->_map[fd]);
     else
-        response = "ircserv: command not found\n";
-
+        response = "ircserv: command not found\r\n";
     send(fd, response.c_str(), response.size(), 0);
 }
 

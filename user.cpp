@@ -18,11 +18,9 @@ std::string server::user_response(std::vector<std::string> split, Client &client
 	if(client.get_pass())
 	{
 		if(client.get_auth())
-			return(":localhost 462 USER :You may not reregister\r\n");
+			return(":localhost 462 " + client.get_nick() + " USER :You may not reregister\r\n");
 		if(split.size() < 5) // || split[1].length() != USERLEN
-			return(":localhost 461 USER :Not enough parameters\r\n");
-		// if(split[1][0] != '~')
-		// 	return(":localhost USER :Invalid username you must start with (~)\r\n");
+			return(":localhost 461 " + client.get_nick() + " USER :Not enough parameters\r\n");
 		client.set_userName(split[1]);
 		client.set_auth(true);
 		if(client.get_reg() && !client.get_print())
