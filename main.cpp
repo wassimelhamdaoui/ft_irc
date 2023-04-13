@@ -46,11 +46,7 @@ void    server::parse_request(char *read, int fd, fd_set *master)
     else if(split[0] == "PASS")
         response = pass_response(split, this->_map[fd]);
     else if(split[0] == "USER")
-    {
         response = user_response(split, this->_map[fd]);
-        if (client.get_print() == true)
-            welcome_message(client.get_fd(), client);
-    }
     else if(split[0] == "NICK")
         response = nick_response(split, this->_map[fd]);
     else if(split[0] == "JOIN" )

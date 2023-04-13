@@ -86,5 +86,6 @@ std::string ft_message(std::string a, std::string b, std::string c, int flg);
 int getClientFd(std::map<int, Client> map, std::string nickname);
 bool check_inVect(std::vector<int> vect, int value);
 void	mysend(int fd, std::string message);
+void    welcome_message(int fd, Client &client);
 
 # endif

@@ -6,7 +6,7 @@
 /*   By: waelhamd <waelhamd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:22:03 by mabdelba          #+#    #+#             */
-/*   Updated: 2023/04/08 06:26:26 by waelhamd         ###   ########.fr       */
+/*   Updated: 2023/04/13 09:52:47 by waelhamd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ std::string server::nick_response(std::vector<std::string>  split, Client &clien
 		if(!client.get_print() && client.get_auth())
 		{
 			client.set_print(true);
-			return(client.get_nick() +  ": You are successfully regeistred\n");
+			welcome_message(client.get_fd() , client);
 		}
 	}
 	return ("");
