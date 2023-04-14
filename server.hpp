@@ -2,6 +2,7 @@
 # define SERVER_HPP
 
 #define USERLEN 12
+#define CHANMAX 300
 #include "headers.hpp"
 
 class Client;
@@ -48,6 +49,7 @@ class server
 		std::string 	user_response(std::vector<std::string> split, Client &client);
 		std::string 	join_response(std::vector<std::string> split, Client &client);
 		std::string 	invite_response(std::vector<std::string> split, Client &client);
+		std::string 	mode_response(std::vector<std::string> split, Client &client);
 		std::string 	part_response(std::vector<std::string> tokens, Client &client);
 		std::string 	topic_response(std::vector<std::string> tokens, Client &client);
 		void			quit_response(std::vector<std::string> split, Client &client, fd_set *master);

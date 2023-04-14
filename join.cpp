@@ -6,11 +6,18 @@
 /*   By: mabdelba <mabdelba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 08:05:10 by waelhamd          #+#    #+#             */
-/*   Updated: 2023/04/12 06:56:20 by mabdelba         ###   ########.fr       */
+/*   Updated: 2023/04/13 06:46:19 by mabdelba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include"headers.hpp"
+
+std::string make_time(void)
+{
+	time_t curr_time;
+	curr_time = time(NULL);
+	return std::to_string(curr_time);
+}
 
 
 std::string server::join_response(std::vector<std::string> split, Client &client)
@@ -45,6 +52,7 @@ std::string server::join_response(std::vector<std::string> split, Client &client
 
 					mychannel.add_member(client.get_fd());
 					mychannel.add_moderator(client.get_fd());
+					mychannel.set_creation_time(make_time());
 					this->_channels.insert(make_pair(names[i], mychannel));
 				}
 				else

@@ -3,20 +3,20 @@
 /*                                                        :::      ::::::::   */
 /*   Client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: waelhamd <waelhamd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabdelba <mabdelba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:22:15 by mabdelba          #+#    #+#             */
-/*   Updated: 2023/04/07 06:10:42 by waelhamd         ###   ########.fr       */
+/*   Updated: 2023/04/14 02:35:37 by mabdelba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "headers.hpp"
 
 
-Client::Client(): _fd(0), _nick("unknown"),_userName("userName"), _pass(false), _reg(false),_auth(false)
+Client::Client(): _fd(0), _nick("*"),_userName("userName"), _pass(false), _reg(false),_auth(false)
 {
 }
-Client::Client(int fd): _fd(fd), _nick("unknown"),_userName("userName"), _pass(false), _reg(false), _auth(false), _print(false)
+Client::Client(int fd): _fd(fd), _nick("*"),_userName("userName"), _pass(false), _reg(false), _auth(false), _print(false)
 {
 }
 Client::Client( const Client & src )

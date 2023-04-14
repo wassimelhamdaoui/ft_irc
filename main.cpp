@@ -28,7 +28,7 @@ void    server::parse_request(char *read, int fd, fd_set *master)
     std::string response;
     std::vector<std::string> split;
 
-    if(this->_map.count(fd) <= 0)
+    if(!this->_map.count(fd))
         this->_map.insert(std::make_pair(fd, client));
     split = modifier(request);
     if(split.empty())
@@ -47,6 +47,8 @@ void    server::parse_request(char *read, int fd, fd_set *master)
         response = topic_response(split, this->_map[fd]);
     else if(split[0] == "INVITE")
         response = invite_response(split, this->_map[fd]);
+    else if(split[0] == "MODE")
+        response = mode_response(split, this->_map[fd]);
     else if (split[0] == "QUIT")
         quit_response(split, this->_map[fd], master);
     else

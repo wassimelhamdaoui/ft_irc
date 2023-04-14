@@ -6,18 +6,26 @@ Channel::Channel()
 {
 	this->_name = "";
 	this->_pass = "";
+	this->_mode = "";
 	this->_topic = "";
+	this->_limit = CHANMAX;
 	this->_is_private = false;
 	this->_inviteMode = false;
+	this->_topicMode = false;
+	this->_limitMode = false;
 }
 
 Channel::Channel(std::string name, std::string pass)
 {
 	this->_name = name;
 	this->_pass = pass;
+	this->_mode = "";
 	this->_topic = "";
+	this->_limit = CHANMAX;
 	this->_inviteMode = false;
 	this->_is_private = false;
+	this->_topicMode = false;
+	this->_limitMode = false;
 }
 
 
@@ -38,7 +46,15 @@ std::string Channel::get_topic() const
 {
 	return (this->_topic);
 }
-bool 		Channel::get_inviteMode() const
+std::string Channel::get_mode() const
+{
+	return (this->_mode);
+}
+int Channel::get_limit() const
+{
+	return this->_limit;
+}
+bool Channel::get_inviteMode() const
 {
 	return (this->_inviteMode);
 }
@@ -47,15 +63,39 @@ bool		Channel::get_is_private() const
 	return (this->_is_private);
 }
 
+bool Channel::get_topicMode() const
+{
+	return this->_topicMode;
+}
+
+bool Channel::get_limitMode() const
+{
+	return this->_limitMode;
+}
+
+std::string Channel::get_creation_time() const
+{
+	return	this->_creation_time;
+}
+
 std::vector<int> Channel::get_members() const
 {
 	return this->members;
+}
+
+std::vector<int> Channel::get_moderators() const
+{
+	return this->_moderators;
 }
 
 //setters
 void Channel::set_name(std::string name)
 {
 	this->_name = name;
+}
+void Channel::set_creation_time(std::string time)
+{
+	this->_creation_time = time;
 }
 void Channel::set_pass(std::string pass)
 {
@@ -65,6 +105,14 @@ void Channel::set_topic(std::string topic)
 {
 	this->_topic = topic;
 }
+void Channel::set_mode(std::string mode)
+{
+	this->_mode = mode;
+}
+void Channel::set_limit(int limit)
+{
+	this->_limit = limit;
+}
 void Channel::set_inviteMode(bool _inviteMode)
 {
 	this->_inviteMode = _inviteMode;
@@ -72,6 +120,16 @@ void Channel::set_inviteMode(bool _inviteMode)
 void Channel::set_is_private(bool is_private)
 {
 	this->_is_private = is_private;
+}
+
+void Channel::set_topicMode(bool topicMode)
+{
+	this->_topicMode = topicMode;
+}
+
+void Channel::set_limitMode(bool limitMode)
+{
+	this->_limitMode = limitMode;
 }
 
 //methods
