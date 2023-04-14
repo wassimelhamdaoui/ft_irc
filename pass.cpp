@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pass.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: waelhamd <waelhamd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabdelba <mabdelba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/31 19:52:15 by mabdelba          #+#    #+#             */
-/*   Updated: 2023/04/08 06:26:17 by waelhamd         ###   ########.fr       */
+/*   Updated: 2023/04/14 08:36:41 by mabdelba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,16 +35,6 @@ void    erase_charcter(std::string& str, char c)
     }
 }
 
-std::string ft_message(std::string a, std::string b, std::string c, int flg)
-{
-	std::string ret;
-	if(flg == 0)
-		ret = "<" + a + "> :" + c + "\n";
-	else if(flg == 1)
-		ret = "<" + a + "> <" + b +">" " :"  + c + "\n";
-	return ret;
-}
-
 std::string server::pass_response(std::vector<std::string> split, Client &client)
 {
 	if(!client.get_pass())
@@ -56,7 +46,7 @@ std::string server::pass_response(std::vector<std::string> split, Client &client
 		client.set_pass(true);
 		return ("");
 	}
-	return (":localhost 462 * PASS :You may not reregister\r\n");
+	return (":localhost 462 " + client.get_nick() +  " PASS :You may not reregister\r\n");
 }
 
 

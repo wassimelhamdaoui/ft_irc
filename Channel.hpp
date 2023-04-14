@@ -12,8 +12,13 @@ class Channel
 		std::string _name;
 		std::string _pass;
 		std::string _topic;
+		std::string _mode;
+		std::string _creation_time;
+		int			_limit;
 		bool		_is_private;
 		bool		_inviteMode;
+		bool		_topicMode;
+		bool		_limitMode;
 
 		std::vector<int>			members;
 		std::vector<int>			_moderators;
@@ -28,15 +33,27 @@ class Channel
 		std::string get_name() const;
 		std::string get_pass() const;
 		std::string get_topic() const;
+		std::string get_mode() const;
+		int			get_limit() const;
+
 		bool 		get_inviteMode() const;
 		bool		get_is_private() const;
+		bool		get_topicMode() const;
+		bool		get_limitMode() const;
+		std::string get_creation_time() const;
 		std::vector<int> get_members() const;
+		std::vector<int> get_moderators() const;
 		//setters
 		void set_name(std::string name);
+		void set_creation_time(std::string time);
 		void set_pass(std::string pass);
 		void set_topic(std::string topic);
+		void set_mode(std::string mode);
+		void set_limit(int limit);
 		void set_inviteMode(bool inviteMode);
 		void set_is_private(bool is_private);
+		void set_topicMode(bool topicMode);
+		void set_limitMode(bool limitMode);
 
 		//methods
 		void add_member(int fd);

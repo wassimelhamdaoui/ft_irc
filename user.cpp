@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: waelhamd <waelhamd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabdelba <mabdelba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/04 23:33:30 by mabdelba          #+#    #+#             */
-/*   Updated: 2023/04/13 09:57:28 by waelhamd         ###   ########.fr       */
+/*   Updated: 2023/04/14 08:47:59 by mabdelba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ std::string server::user_response(std::vector<std::string> split, Client &client
 			nick = "*";
 		if(client.get_auth())
 			return(":localhost 462 " + nick + " USER :You may not reregister\r\n");
-		if(split.size() < 5) // || split[1].length() != USERLEN
+		if(split.size() < 5)
 			return(":localhost 461 " + nick + " USER :Not enough parameters\r\n");
 		client.set_userName(split[1]);
 		client.set_auth(true);

@@ -1,4 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   join.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mabdelba <mabdelba@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/04/06 08:05:10 by waelhamd          #+#    #+#             */
+/*   Updated: 2023/04/14 09:31:04 by mabdelba         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include"headers.hpp"
+
+std::string make_time(void)
+{
+	time_t curr_time;
+	curr_time = time(NULL);
+	return std::to_string(curr_time);
+}
+
 
 std::string server::join_response(std::vector<std::string> split, Client &client)
 {
@@ -33,6 +53,7 @@ std::string server::join_response(std::vector<std::string> split, Client &client
 
 					mychannel.add_member(client.get_fd());
 					mychannel.add_moderator(client.get_fd());
+					mychannel.set_creation_time(make_time());
 					this->_channels.insert(make_pair(names[i], mychannel));
 				}
 				else
@@ -77,7 +98,5 @@ std::string server::join_response(std::vector<std::string> split, Client &client
 			}
 		}
 	}
-	else if(split.size() > 3)
-		return (":localhost 461 " + client.get_nick() + " " + split[0] + " :Too many parameters\r\n");	
 	return ("");
 }

@@ -33,13 +33,12 @@ std::vector<std::string> modifier(std::string str)
 
 void    server::parse_request(char *read, int fd, fd_set *master)
 {
-    std::cout << read << std::endl;
     Client client(fd);
     std::string request(read);
     std::string response;
     std::vector<std::string> split;
 
-    if(this->_map.count(fd) <= 0)
+    if(!this->_map.count(fd))
         this->_map.insert(std::make_pair(fd, client));
     split = modifier(request);
     if(split.empty())
@@ -58,14 +57,16 @@ void    server::parse_request(char *read, int fd, fd_set *master)
         response = topic_response(split, this->_map[fd]);
     else if(split[0] == "INVITE")
         response = invite_response(split, this->_map[fd]);
+    else if(split[0] == "MODE")
+        response = mode_response(split, this->_map[fd]);
     else if (split[0] == "QUIT")
-            response = quit_response(split, this->_map[fd], master);
+        response = quit_response(split, this->_map[fd], master);
     else if (split[0] == "PRIVMSG")
        response = privmsg_response(request, this->_map[fd]);
     else if(split[0] == "NOTICE")
        response = notice_response(request, this->_map[fd]);
     else
-        response = "ircserv: command not found\r\n";
+        response = "";
     send(fd, response.c_str(), response.size(), 0);
 }
 

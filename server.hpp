@@ -2,6 +2,7 @@
 # define SERVER_HPP
 
 #define USERLEN 12
+#define CHANMAX 300
 #include "headers.hpp"
 
 class Client;
@@ -48,6 +49,7 @@ class server
 		std::string 	user_response(std::vector<std::string> split, Client &client);
 		std::string 	join_response(std::vector<std::string> split, Client &client);
 		std::string 	invite_response(std::vector<std::string> split, Client &client);
+		std::string 	mode_response(std::vector<std::string> split, Client &client);
 		std::string 	part_response(std::vector<std::string> tokens, Client &client);
 		std::string 	topic_response(std::vector<std::string> tokens, Client &client);
 		std::string 	privmsg_response(std::string buff, Client &client);
@@ -81,11 +83,10 @@ int 	accept_connection(int socket_listen, fd_set *master, int *max_socket);
 
 ///****************  utils  ****************////
 
-std::vector<std::string> ft_split(std::string str, char sep);
-std::string ft_message(std::string a, std::string b, std::string c, int flg);
-int getClientFd(std::map<int, Client> map, std::string nickname);
-bool check_inVect(std::vector<int> vect, int value);
-void	mysend(int fd, std::string message);
-void    welcome_message(int fd, Client &client);
+std::vector<std::string>	ft_split(std::string str, char sep);
+int							getClientFd(std::map<int, Client> map, std::string nickname);
+bool						check_inVect(std::vector<int> vect, int value);
+void						mysend(int fd, std::string message);
+void						welcome_message(int fd, Client &client);
 
 # endif
