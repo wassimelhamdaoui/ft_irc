@@ -78,7 +78,7 @@ std::string server::topic_response(std::vector<std::string> tokens, Client &clie
     std::string response = "";
 
     // clear topic
-    if (tokens[0] == "TOPIC" && tokens.size() == 3 && tokens[tokens.size() - 1] == ":")
+    if (tokens[0] == "TOPIC" && tokens.size() == 3 && tokens[tokens.size() - 1] == "::")
     {
         if (!has_comma(tokens[1]))
             response = clear_topic(tokens[1], client);
