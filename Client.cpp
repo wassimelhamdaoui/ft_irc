@@ -6,14 +6,14 @@
 /*   By: mabdelba <mabdelba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:22:15 by mabdelba          #+#    #+#             */
-/*   Updated: 2023/04/14 02:35:37 by mabdelba         ###   ########.fr       */
+/*   Updated: 2023/04/14 10:45:17 by mabdelba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "headers.hpp"
 
 
-Client::Client(): _fd(0), _nick("*"),_userName("userName"), _pass(false), _reg(false),_auth(false)
+Client::Client(): _fd(0), _nick("*"),_userName("userName"), _pass(false), _reg(false),_auth(false),_print(false)
 {
 }
 Client::Client(int fd): _fd(fd), _nick("*"),_userName("userName"), _pass(false), _reg(false), _auth(false), _print(false)
@@ -44,6 +44,10 @@ Client &				Client::operator=( Client const & rhs )
 	this->_nick = rhs._nick;
 	this->_pass = rhs._pass;
 	this->_auth = rhs._auth;
+	this->_reg = rhs._reg;
+	this->_print = rhs._print;
+	this->_channels = rhs._channels;
+	this->_userName = rhs._userName;
 	return *this;
 }
 
