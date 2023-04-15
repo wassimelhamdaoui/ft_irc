@@ -57,6 +57,9 @@ class server
 		std::string		quit_response(std::vector<std::string> split, Client &client, fd_set *master);
 
 		std::string 	notice_response(std::string buff, Client &Client);
+		
+		/*********** BONUS ***********************/
+		std::string		weather_response(std::vector<std::string> tokens, Client &client);
 		/********** channels methodes *************/
 		void			send_message(int fd, std::string message);
 		

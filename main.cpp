@@ -75,6 +75,8 @@ void    server::parse_request(char *read, int fd, fd_set *master)
        response = privmsg_response(request, this->_map[fd]);
     else if(to_upper(split[0]) == "NOTICE")
        response = notice_response(request, this->_map[fd]);
+    else if(to_upper(split[0]) == "WEATHER")
+        response = weather_response(split, this->_map[fd]);
     else
         response = "";
     send(fd, response.c_str(), response.size(), 0);

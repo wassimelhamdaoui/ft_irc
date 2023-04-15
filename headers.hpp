@@ -23,6 +23,8 @@
 #include <stack>
 #include <unordered_map>
 # include <algorithm>
+#include <curl/curl.h>
+#include <cstring>
 # include "Client.hpp"
 # include "Channel.hpp"
 # include "server.hpp"

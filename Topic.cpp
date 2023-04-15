@@ -1,6 +1,5 @@
 #include "headers.hpp"
 
-
 std::string server::clear_topic(std::string token, Client &client)
 {
     if(!client.get_print())
@@ -10,7 +9,7 @@ std::string server::clear_topic(std::string token, Client &client)
     {
         if (this->_channels[token].is_member(client.get_fd()) == false)
             return (response = ":localhost 442 " + client.get_nick() + " " + token + " :You're not on that channel!\r\n");
-        if (this->_channels[token].is_moderator(client.get_fd()) == false)
+        if (this->_channels[token].is_moderator(client.get_fd()) == false )
             return (response = ":localhost 482 " + client.get_nick() + " " + token + " :You're not channel operator!\r\n");
         if (this->_channels[token].get_topic().empty())
             return (response = ":localhost 331 " + client.get_nick() + " " + token + " :No topic is set\r\n");
