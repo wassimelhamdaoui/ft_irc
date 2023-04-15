@@ -6,11 +6,21 @@
 /*   By: mabdelba <mabdelba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/09 06:45:43 by mabdelba          #+#    #+#             */
-/*   Updated: 2023/04/14 09:55:32 by mabdelba         ###   ########.fr       */
+/*   Updated: 2023/04/15 10:15:02 by mabdelba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "headers.hpp"
+
+bool str_isdigit(std::string str)
+{
+    for(int i = 0; str[i]; i++)
+    {
+        if(!isdigit(str[i]))
+            return false;
+    }
+    return true;
+}
 
 std::string 	server::mode_response(std::vector<std::string> split, Client &client)
 {
@@ -62,9 +72,11 @@ std::string 	server::mode_response(std::vector<std::string> split, Client &clien
 					response += "k " + key + " ";
 					flg++;
 				}
-				if(c == 'l' && !channel.get_limit() && split.size() >= 4)
+				if(c == 'l' && !channel.get_limitMode() && split.size() >= 4 && str_isdigit(split[3]))
 				{
 					int limit = atoi(split[3].c_str());
+					if((size_t)limit < channel.get_members().size())
+						limit = (int)channel.get_members().size();
 					channel.set_limitMode(true);
 					channel.set_limit(limit);
 					mode += "l " + std::to_string(limit) + " ";
@@ -103,7 +115,7 @@ std::string 	server::mode_response(std::vector<std::string> split, Client &clien
 					response += "k " + key;
 					flg++;
 				}
-				if(c == 'l' && channel.get_limit())
+				if(c == 'l' && channel.get_limitMode())
 				{
 					std::string limit = std::to_string(channel.get_limit());
 					channel.set_limitMode(false);

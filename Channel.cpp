@@ -203,6 +203,18 @@ void Channel::remove_member(int fd)
 	}
 }
 
+void Channel::remove_moderator(int fd)
+{
+	for (size_t i = 0; i < this->_moderators.size(); i++)
+	{
+		if (this->_moderators[i] == fd)
+		{
+			this->_moderators.erase(this->_moderators.begin() + i);
+			return;
+		}
+	}
+}
+
 bool	Channel::is_empty() const
 {
 	if(this->get_name().empty())

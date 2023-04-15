@@ -20,6 +20,14 @@ void    ft_replace(std::string &str, char c, std::string rep)
 	}
 }
 
+std::string to_upper(std::string str)
+{
+    for(int i = 0; str[i]; i++)
+        str[i] = std::toupper(str[i]);
+
+    return str;
+}
+
 std::vector<std::string> modifier(std::string str)
 {
     std::vector<std::string> split;
@@ -43,27 +51,29 @@ void    server::parse_request(char *read, int fd, fd_set *master)
     split = modifier(request);
     if(split.empty())
         response = "";
-    else if(split[0] == "PASS")
+    else if(to_upper(split[0]) == "PASS")
         response = pass_response(split, this->_map[fd]);
-    else if(split[0] == "USER")
+    else if(to_upper(split[0]) == "USER")
         response = user_response(split, this->_map[fd]);
-    else if(split[0] == "NICK")
+    else if(to_upper(split[0]) == "NICK")
         response = nick_response(split, this->_map[fd]);
-    else if(split[0] == "JOIN" )
+    else if(to_upper(split[0]) == "JOIN" )
         response = join_response(split, this->_map[fd]);
-    else if (split[0] == "PART")
+    else if (to_upper(split[0]) == "PART")
         response = part_response(split, this->_map[fd]);
-    else if (split[0] == "TOPIC")
+    else if (to_upper(split[0]) == "TOPIC")
         response = topic_response(split, this->_map[fd]);
-    else if(split[0] == "INVITE")
+    else if(to_upper(split[0]) == "INVITE")
         response = invite_response(split, this->_map[fd]);
-    else if(split[0] == "MODE")
+    else if(to_upper(split[0]) == "KICK")
+        response = kick_response(split, this->_map[fd]);
+    else if(to_upper(split[0]) == "MODE")
         response = mode_response(split, this->_map[fd]);
-    else if (split[0] == "QUIT")
+    else if (to_upper(split[0]) == "QUIT")
         response = quit_response(split, this->_map[fd], master);
-    else if (split[0] == "PRIVMSG")
+    else if (to_upper(split[0]) == "PRIVMSG")
        response = privmsg_response(request, this->_map[fd]);
-    else if(split[0] == "NOTICE")
+    else if(to_upper(split[0]) == "NOTICE")
        response = notice_response(request, this->_map[fd]);
     else
         response = "";
