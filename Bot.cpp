@@ -116,6 +116,5 @@ std::string server::weather_response(std::vector<std::string> tokens, Client &cl
     if ((tokens.size() == 2 && tokens[1] == ":") || tokens.size() < 2)
         return (":localhost 461 " + client.get_nick() + " WEATHER " + " :Not enough parameters\r\n");
     std::string response = weather(tokens[1], client);
-    std::cout << response << std::endl;
     return (response);
 }

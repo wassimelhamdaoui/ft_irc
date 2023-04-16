@@ -6,7 +6,7 @@
 /*   By: waelhamd <waelhamd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 10:17:42 by waelhamd          #+#    #+#             */
-/*   Updated: 2023/04/13 06:06:41 by waelhamd         ###   ########.fr       */
+/*   Updated: 2023/04/16 01:23:36 by waelhamd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,13 +39,13 @@ std::string server::notice_response(std::string buff, Client &client)
 		return (client.get_fd(), ":" + client.get_nick() + " 412 NOTICE :No text to send\n");
 	else
 	{
-		recipient = ft_split(split[1], ','); //split recipient
+		recipient = ft_split(split[1], ',');
 		std::vector<std::string>::iterator it = recipient.begin();
 		for(; it != recipient.end(); it++)
 		{
 			if (this->_channels.find(*it) != this->_channels.end())//if recipient is a channel
 			{
-				this->_channels[*it].broadcast_message(split[2], client.get_nick(), client.get_fd());
+				this->_channels[*it].broadcast_message(split[2], client.get_nick());
 			}
 			else if (getClientFd(this->_map, *it))//if recipient is a user
 			{

@@ -92,5 +92,6 @@ int							getClientFd(std::map<int, Client> map, std::string nickname);
 bool						check_inVect(std::vector<int> vect, int value);
 void						mysend(int fd, std::string message);
 void						welcome_message(int fd, Client &client);
+std::string					get_adderss();
 
 # endif

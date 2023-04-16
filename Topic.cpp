@@ -9,7 +9,7 @@ std::string server::clear_topic(std::string token, Client &client)
     {
         if (this->_channels[token].is_member(client.get_fd()) == false)
             return (response = ":localhost 442 " + client.get_nick() + " " + token + " :You're not on that channel!\r\n");
-        if (this->_channels[token].is_moderator(client.get_fd()) == false )
+        if (this->_channels[token].is_moderator(client.get_fd()) == false)
             return (response = ":localhost 482 " + client.get_nick() + " " + token + " :You're not channel operator!\r\n");
         if (this->_channels[token].get_topic().empty())
             return (response = ":localhost 331 " + client.get_nick() + " " + token + " :No topic is set\r\n");
@@ -52,7 +52,7 @@ std::string server::set_topic(std::string token, std::string topic, Client &clie
     {
         if (this->_channels[token].is_member(client.get_fd()) == false)
             return (response = ":localhost 442 " + client.get_nick() + " " + token + " :You're not on that channel\r\n");
-        if (this->_channels[token].is_moderator(client.get_fd()) == false)
+        if (this->_channels[token].is_moderator(client.get_fd()) == false && this->_channels[token].get_topicMode() == true)
             return (response = ":localhost 482 " + client.get_nick() + " " + token + " :You're not channel operator\r\n");
         this->_channels[token].set_topic(topic);
         if (this->_channels[token].get_members().size() != 0)
@@ -77,7 +77,7 @@ std::string server::topic_response(std::vector<std::string> tokens, Client &clie
     std::string response = "";
 
     // clear topic
-    if (tokens[0] == "TOPIC" && tokens.size() == 3 && tokens[tokens.size() - 1] == "::")
+    if (tokens.size() == 3 && tokens[tokens.size() - 1] == "::")
     {
         if (!has_comma(tokens[1]))
             response = clear_topic(tokens[1], client);
@@ -90,7 +90,7 @@ std::string server::topic_response(std::vector<std::string> tokens, Client &clie
         }
     }
 
-    else if (tokens[0] == "TOPIC" && tokens.size() > 0)
+    else if (tokens.size() > 0)
     {
         if (tokens.size() == 2 && tokens[1] == ":")
             return (response = ":localhost 461 " + client.get_nick() + " TOPIC "  + ":Not enough parameters\r\n");

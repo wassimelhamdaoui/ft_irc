@@ -6,12 +6,12 @@ std::string server::part1(std::string token, Client &client)
     if (this->_channels.count(token) > 0)
     {
         if (this->_channels[token].is_member(client.get_fd()) == false)
-            return (response = ":localhost 442 " + client.get_nick() + " " + token + " :You're not on that channel\r\n");
+            mysend(client.get_fd(), ":localhost 442 " + client.get_nick() + " PART " + token + " :You're not on that channel\r\n");
         this->_channels[token].remove_member(client.get_fd());
         client.remove_channel(token);
         if (this->_channels[token].get_members().size() == 0)
             this->_channels.erase(token);
-        response = ":" + client.get_nick() + " PART " + token + "\r\n";
+        mysend(client.get_fd(), ":" + client.get_nick() + "!" + client.get_userName() + "@" + get_adderss() + " PART :" + token + "\r\n");
         if (this->_channels.size() != 0)
         {
             std::vector<int> members = this->_channels[token].get_members();
@@ -36,14 +36,14 @@ std::string server::part_with_reason(std::string token, Client &client, std::str
     if (this->_channels.count(token) > 0)
     {
         if (this->_channels[token].is_member(client.get_fd()) == false)
-            return (response = ":localhost 442 " + client.get_nick() + " " + token + " :You're not on that channel\r\n");
+            mysend(client.get_fd(), ":localhost 442 " + client.get_nick() + " PART " + token + " :You're not on that channel\r\n");
         this->_channels[token].remove_member(client.get_fd());
         client.remove_channel(token);
         if (this->_channels[token].get_members().size() == 0)
             this->_channels.erase(token);
-        response = ":" + client.get_nick() + " PART :" + token + " :\"" + reason + "\"\r\n";
+        mysend(client.get_fd(), ":" + client.get_nick() + "!" + client.get_userName() + "@" + get_adderss() + " PART :" + token + " :\"" + reason + "\"\r\n");
         if (reason.empty())
-            response = ":" + client.get_nick() + " PART :" + token + "\r\n";
+            mysend(client.get_fd(), ":" + client.get_nick() + "!" + client.get_userName() + "@" + get_adderss() + " PART :" + token + "\r\n");
         if (this->_channels.size() != 0)
         {
             std::vector<int> members = this->_channels[token].get_members();
@@ -67,7 +67,7 @@ std::string server::part_response(std::vector<std::string> tokens, Client &clien
     if(!client.get_print())
 		return (":localhost 451 * PART :You must finish connecting with nickname first.\r\n");
     std::string response = "";
-    if (tokens[0] == "PART" && tokens.size() > 0)
+    if ( tokens.size() > 0)
     {
         if (tokens.size() == 2 && tokens[1] == ":")
             return (response = ":localhost 461 " + client.get_nick() + " PART " + " :Not enough parameters\r\n");

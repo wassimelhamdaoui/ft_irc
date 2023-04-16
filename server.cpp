@@ -220,7 +220,7 @@ void server::run()
                 if (i == socket_listen) {
                     int socket_client = accept_connection(socket_listen, &master, &max_socket);
                     if ( socket_client < 0)
-                        return ;
+                        continue;
                 }
                 else{
                     if (request_handler(i, &master) < 0)

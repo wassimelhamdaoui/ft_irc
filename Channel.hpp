@@ -69,7 +69,7 @@ class Channel
 		bool channel_exist(std::map<std::string, Channel> &channels, std::string channel_name);
 		bool is_member(int fd);
 		bool is_moderator(int fd);
-		void broadcast_message(std::string message, std::string nick, int fd);
+		void broadcast_message(std::string message, std::string nick);
 		bool is_empty() const;
 };
 

@@ -33,3 +33,14 @@ void	mysend(int fd, std::string message)
 	send(fd, message.c_str(), message.size(), 0);
 
 }
+
+std::string get_adderss()
+{
+    char hostname[1024];
+    hostname[1023] = '\0';
+    gethostname(hostname, 1023);
+    struct hostent *host = gethostbyname(hostname);
+    if (host)
+        return std::string(inet_ntoa(*(struct in_addr*)*host->h_addr_list));
+    return "localhost";
+}

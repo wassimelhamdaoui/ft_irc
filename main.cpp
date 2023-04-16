@@ -1,4 +1,5 @@
 #include "headers.hpp"
+#include "server.hpp"
 
 void    welcome_message(int fd, Client &client)
 {
@@ -10,7 +11,8 @@ void    welcome_message(int fd, Client &client)
     send(fd, (char *)message.c_str(), message.length(), 0);
 }
 
-void    ft_replace(std::string &str, char c, std::string rep)
+
+void ft_replace(std::string &str, char c, std::string rep)
 {
     size_t pos = str.find(c);
 	while(pos != std::string::npos)
@@ -41,7 +43,7 @@ std::vector<std::string> modifier(std::string str)
 
 void    server::parse_request(char *read, int fd, fd_set *master)
 {
-    std::cout << read << std::endl;
+    // std::cout << read << std::endl;
     Client client(fd);
     std::string request(read);
     std::string response;
