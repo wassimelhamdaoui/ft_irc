@@ -6,7 +6,7 @@
 /*   By: waelhamd <waelhamd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 10:17:42 by waelhamd          #+#    #+#             */
-/*   Updated: 2023/04/13 06:06:41 by waelhamd         ###   ########.fr       */
+/*   Updated: 2023/04/15 22:37:46 by waelhamd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ std::string server::notice_response(std::string buff, Client &client)
 		return (client.get_fd(), ":" + client.get_nick() + " 412 NOTICE :No text to send\n");
 	else
 	{
-		recipient = ft_split(split[1], ','); //split recipient
+		recipient = ft_split(split[1], ',');
 		std::vector<std::string>::iterator it = recipient.begin();
 		for(; it != recipient.end(); it++)
 		{

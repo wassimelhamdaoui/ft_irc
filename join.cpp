@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mabdelba <mabdelba@student.42.fr>          +#+  +:+       +#+        */
+/*   By: waelhamd <waelhamd@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 08:05:10 by waelhamd          #+#    #+#             */
-/*   Updated: 2023/04/15 10:22:37 by mabdelba         ###   ########.fr       */
+/*   Updated: 2023/04/16 00:48:34 by waelhamd         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,25 +47,28 @@ std::string server::join_response(std::vector<std::string> split, Client &client
 				{//if channel does not exist
 					client.set_channel(names[i]);
 					if(key.size() > i)
-						mychannel = Channel(names[i], key[i]);//if key is provided
+						mychannel = Channel(names[i], key[i]);
 					else 
-						mychannel = Channel(names[i], "");//if key is not provided
+						mychannel = Channel(names[i], "");
 
 					mychannel.add_member(client.get_fd());
 					mychannel.add_moderator(client.get_fd());
 					mychannel.set_creation_time(make_time());
 					this->_channels.insert(make_pair(names[i], mychannel));
+
+					mysend(client.get_fd(), ":" + client.get_nick() + "!" + client.get_userName() + "@" + get_adderss() + " JOIN :" + names[i] + "\r\n");
 				}
 				else
 				{//if channel exists
-					//check if the moderator is part of the channel need to chanage moderator
-					if(this->_channels[names[i]].get_inviteMode())
+					if(this->_channels[names[i]].get_limitMode() && this->_channels[names[i]].get_limit() <= (int)this->_channels[names[i]].get_members().size())
+						mysend(client.get_fd(), ":localhost 471 " + client.get_nick() + " " + names[i] + " :Cannot join channel (+l)\r\n");
+					else if(this->_channels[names[i]].get_inviteMode())
 					{
-						if(this->_channels[names[i]].is_invited(client.get_nick()))
+						if(!this->_channels[names[i]].is_invited(client.get_nick()))
 						{
 							client.set_channel(names[i]);
 							this->_channels[names[i]].add_member(client.get_fd());
-							//need to notify other users in channel that user has joined
+							this->_channels[names[i]].broadcast_message("!" + client.get_userName() + "@"+ get_adderss() + " JOIN :" + names[i] + "\r\n", client.get_nick(), client.get_fd());
 						}
 						else
 							mysend(client.get_fd(), ":localhost 473 " + client.get_nick() + " " + names[i] + " :Cannot join channel (+i)\r\n");
@@ -78,6 +81,7 @@ std::string server::join_response(std::vector<std::string> split, Client &client
 							{
 								client.set_channel(names[i]);
 								this->_channels[names[i]].add_member(client.get_fd());
+								this->_channels[names[i]].broadcast_message("!" + client.get_userName() + "@"+ get_adderss() + " JOIN :" + names[i] + "\r\n", client.get_nick(), client.get_fd());
 							}
 							else
 								mysend(client.get_fd(), ":localhost 475 " + client.get_nick() + " " + names[i] + " :Cannot join channel (+k)\r\n");
@@ -88,12 +92,12 @@ std::string server::join_response(std::vector<std::string> split, Client &client
 							{
 								client.set_channel(names[i]);
 								this->_channels[names[i]].add_member(client.get_fd());
+								this->_channels[names[i]].broadcast_message("!" + client.get_userName() + "@"+ get_adderss() + " JOIN :" + names[i] + "\r\n", client.get_nick(), client.get_fd());
 							}
 							else
 								mysend(client.get_fd(), ":localhost 475 " + client.get_nick() + " " + names[i] + " :Cannot join channel (+k)\r\n");
 						}
 					}
-					
 				}
 			}
 		}
