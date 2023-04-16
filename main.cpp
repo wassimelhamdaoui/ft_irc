@@ -41,6 +41,7 @@ std::vector<std::string> modifier(std::string str)
 
 void    server::parse_request(char *read, int fd, fd_set *master)
 {
+    std::cout << read << std::endl;
     Client client(fd);
     std::string request(read);
     std::string response;

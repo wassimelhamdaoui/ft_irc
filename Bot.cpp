@@ -13,13 +13,6 @@
 //               << "\033[0m";
 // }
 
-// The URL of the weather API endpoint
-const std::string WEATHER_API_URL = "http://api.openweathermap.org/data/2.5/weather?q=";
-
-// Your OpenWeatherMap API key
-const std::string API_KEY = "13fa4f69de439413060d5076a7fbcd43";
-
-// A helper function to extract the weather information from the API response
 
 std::string get_weather_info(std::string json)
 {
@@ -47,21 +40,24 @@ std::string get_value(std::string token)
 }
 
 // A helper function to extract the weather information from the API response
-void parse_weather(std::string json, Client &client)
+std::string parse_weather(std::string json, Client &client)
 {
+    (void)(client);
     std::string weather_info = get_weather_info(json);
     
     std::vector<std::string> tokens = ft_split(weather_info, ',');
     std::string weather = get_value(tokens[0]);
     std::string main = get_value(tokens[1]);
     std::string description = get_value(tokens[2]);
+    
     std::string header = "----------------------------------------------\r\n|           CURRENT WEATHER REPORT           |\r\n----------------------------------------------\r\n";
     std::string weather_str = "|  Weather:      " + weather + "                         |\r\n";
     std::string main_str = "|  Main:         " + main + "                    |\r\n";
     std::string description_str = "|  Description:  " + description + "          |\r\n";
     std::string footer = "----------------------------------------------\r\n";
-    std::string weather_report = header + weather_str + main_str + description_str + footer;
-    send(client.get_fd(), weather_report.c_str(), weather_report.length(), 0);
+
+    std::string response = header + weather_str + main_str + description_str + footer;
+    return (response);
 }
 
 // A helper function to handle the data received from the API
@@ -71,6 +67,11 @@ static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *use
 }
 
 std::string weather(std::string city, Client &client) {
+    // The URL of the weather API endpoint
+const std::string WEATHER_API_URL = "http://api.openweathermap.org/data/2.5/weather?q=";
+
+// Your OpenWeatherMap API key
+const std::string API_KEY = "13fa4f69de439413060d5076a7fbcd43";
    std::string response = "";
     // Construct the API URL with the user's input and the API key
     std::string url = WEATHER_API_URL + city + "&appid=" + API_KEY;
@@ -92,21 +93,20 @@ std::string weather(std::string city, Client &client) {
 
         // Fetch the data from the API
         res = curl_easy_perform(curl);
-
-        // Check for errors
-        if (res != CURLE_OK) {
+        if (res != CURLE_OK)
             std::cerr << "curl_easy_perform() failed: " << curl_easy_strerror(res) << std::endl;
-        } else {
+        else {
             if (response_string.empty() || response_string == "{\"cod\":\"404\",\"message\":\"city not found\"}")
+            {
+                curl_global_cleanup();
+                curl_easy_cleanup(curl);
                 return ":localhost 461 " + client.get_nick() + " WEATHER " + " :City not found\r\n";
+            }
             else
-                parse_weather(response_string, client);
+                response = parse_weather(response_string, client);
         }
-
-        // Clean up
         curl_easy_cleanup(curl);
     }
-
     curl_global_cleanup();
     return (response);
 }
@@ -116,5 +116,6 @@ std::string server::weather_response(std::vector<std::string> tokens, Client &cl
     if ((tokens.size() == 2 && tokens[1] == ":") || tokens.size() < 2)
         return (":localhost 461 " + client.get_nick() + " WEATHER " + " :Not enough parameters\r\n");
     std::string response = weather(tokens[1], client);
+    std::cout << response << std::endl;
     return (response);
 }
