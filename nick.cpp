@@ -6,7 +6,7 @@
 /*   By: mabdelba <mabdelba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:22:03 by mabdelba          #+#    #+#             */
-/*   Updated: 2023/04/15 10:24:54 by mabdelba         ###   ########.fr       */
+/*   Updated: 2023/04/16 05:34:12 by mabdelba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ std::string server::nick_response(std::vector<std::string>  split, Client &clien
 {
 	if(client.get_pass())
 	{
-		if(split.size() == 2 && split[1] == ":")
+		if(split.size() == 1  || (split.size() == 2 && split[1] == ":"))
 			return(":localhost 431 * NICK :No nickname given\r\n");
 		if(!check_nickname(split[1]))
 			return (":localhost 432 * NICK :Erroneous nickname\r\n");

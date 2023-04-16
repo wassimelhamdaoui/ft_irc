@@ -6,7 +6,7 @@
 /*   By: mabdelba <mabdelba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/15 08:15:16 by mabdelba          #+#    #+#             */
-/*   Updated: 2023/04/15 09:32:43 by mabdelba         ###   ########.fr       */
+/*   Updated: 2023/04/16 06:49:01 by mabdelba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,11 @@ std::string 	server::kick_response(std::vector<std::string> split, Client &clien
 		std::string msg = "";
 		if(flg)
 			msg = " using \"" + comment + "\" as the reason (comment).";
-		return (":localhost " + client.get_nick() + " kicked " + User.get_nick() + " out of " + channel.get_name() + msg +"\r\n");
+		std::string broad1, broad2;
+		broad1 = client.get_nick() + "!~" + client.get_userName() + "@localhost KICK " + User.get_nick() + " out of";
+		broad2 = channel.get_name() + msg +"\r\n";
+		channel.broad_message(":" + client.get_nick() + "!~" + client.get_userName() + "@localhost KICK " + User.get_nick() + " out of " + channel.get_name() + msg +"\r\n", client.get_fd());
+		return (":" + client.get_nick() + "!~" + client.get_userName() + "@localhost KICK " + User.get_nick() + " out of " + channel.get_name() + msg +"\r\n");
 	}
 	return "";
 }

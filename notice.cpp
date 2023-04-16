@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   notice.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: waelhamd <waelhamd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabdelba <mabdelba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 10:17:42 by waelhamd          #+#    #+#             */
-/*   Updated: 2023/04/16 01:23:36 by waelhamd         ###   ########.fr       */
+/*   Updated: 2023/04/16 05:11:22 by mabdelba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ std::string server::notice_response(std::string buff, Client &client)
 		{
 			if (this->_channels.find(*it) != this->_channels.end())//if recipient is a channel
 			{
-				this->_channels[*it].broadcast_message(split[2], client.get_nick());
+				this->_channels[*it].broadcast_message(split[2], client.get_nick(), client.get_fd());
 			}
 			else if (getClientFd(this->_map, *it))//if recipient is a user
 			{
