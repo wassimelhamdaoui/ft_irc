@@ -6,7 +6,7 @@
 /*   By: mabdelba <mabdelba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:22:15 by mabdelba          #+#    #+#             */
-/*   Updated: 2023/04/15 10:22:13 by mabdelba         ###   ########.fr       */
+/*   Updated: 2023/04/16 17:32:32 by mabdelba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,11 +96,6 @@ bool Client::get_print() const{
 std::vector<std::string> &Client::get_channel(){
 
 	return  _channels;
-}
-
-void	Client::set_fd(int fd){
-
-	this->_fd = fd;
 }
 
 void	Client::set_nick(std::string nick)

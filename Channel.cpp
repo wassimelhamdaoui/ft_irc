@@ -1,7 +1,6 @@
 #include "headers.hpp"
 #include "Channel.hpp"
 
-//constructors
 Channel::Channel()
 {
 	this->_name = "";
@@ -222,8 +221,6 @@ bool	Channel::is_empty() const
 	return false;
 	
 }
-
-// send message to all members of channel
 
 void Channel::broadcast_message(std::string message, int fd)
 {

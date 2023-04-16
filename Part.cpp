@@ -13,13 +13,12 @@ std::string server::part1(std::string token, Client &client)
             this->_channels.erase(token);
         mysend(client.get_fd(), ":" + client.get_nick() + "!" + client.get_userName() + "@" + get_adderss() + " PART :" + token + "\r\n");
         if (this->_channels.size() != 0)
-        {
+        {         
+            response = ":" + client.get_nick() + " PART :" + token + "\r\n";
             std::vector<int> members = this->_channels[token].get_members();
             for (size_t i = 0; i < members.size(); i++)
-            {
-                if (members[i] != client.get_fd())
                     send(members[i], response.c_str(), response.size(), 0);
-            }
+            response = "";
             if (this->_channels[token].get_members().size() == 0)
                 this->_channels.erase(token);
         }
@@ -41,17 +40,17 @@ std::string server::part_with_reason(std::string token, Client &client, std::str
         client.remove_channel(token);
         if (this->_channels[token].get_members().size() == 0)
             this->_channels.erase(token);
-        mysend(client.get_fd(), ":" + client.get_nick() + "!" + client.get_userName() + "@" + get_adderss() + " PART :" + token + " :\"" + reason + "\"\r\n");
+        if (!reason.empty())
+            mysend(client.get_fd(), ":" + client.get_nick() + "!" + client.get_userName() + "@" + get_adderss() + " PART :" + token + " :\"" + reason + "\"\r\n");
         if (reason.empty())
             mysend(client.get_fd(), ":" + client.get_nick() + "!" + client.get_userName() + "@" + get_adderss() + " PART :" + token + "\r\n");
         if (this->_channels.size() != 0)
         {
+            response = client.get_fd(), ":" + client.get_nick() + "!" + client.get_userName() + "@" + get_adderss() + " PART :" + token + " :\"" + reason + "\"\r\n";
             std::vector<int> members = this->_channels[token].get_members();
             for (size_t i = 0; i < members.size(); i++)
-            {
-                if (members[i] != client.get_fd())
                     send(members[i], response.c_str(), response.size(), 0);
-            }
+            response = "";
             if (this->_channels[token].get_members().size() == 0)
                 this->_channels.erase(token);
         }

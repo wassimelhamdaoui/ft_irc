@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   Client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: waelhamd <waelhamd@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mabdelba <mabdelba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/02 20:22:12 by mabdelba          #+#    #+#             */
-/*   Updated: 2023/04/07 06:10:35 by waelhamd         ###   ########.fr       */
+/*   Updated: 2023/04/16 18:38:14 by mabdelba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,6 @@ class Client
 		bool get_auth() const;
 		bool get_print() const;
 
-		void	set_fd(int fd);
 		void	set_nick(std::string nick);
 		void	set_userName(std::string userName);
 		void	set_pass(bool pass);
@@ -45,7 +44,6 @@ class Client
 		void	set_auth(bool auth);
 		void	set_channel(std::string channel);
 		std::vector<std::string>	&get_channel();
-		// std::string get_user() const;
 		bool	check_member(std::string memeber);	
 		void	remove_channel(std::string channel);
 		void	set_print(bool print);

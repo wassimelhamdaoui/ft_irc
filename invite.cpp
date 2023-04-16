@@ -6,7 +6,7 @@
 /*   By: mabdelba <mabdelba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/11 06:32:27 by mabdelba          #+#    #+#             */
-/*   Updated: 2023/04/16 15:15:52 by mabdelba         ###   ########.fr       */
+/*   Updated: 2023/04/16 17:30:56 by mabdelba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,8 @@ std::string	server::invite_response(std::vector<std::string> split, Client &clie
 	if(Clientfd)
 	{
 		this->_channels[split[2]].add_invited_list(split[1]);
-		std::string msg = ":" + client.get_nick() + "!~" + client.get_userName() + "@loclhost INVITE you to " + split[2] + "\r\n";
+		std::string msg = ":" + client.get_nick() + "!~" + client.get_userName() + "@loclhost INVITE you " + split[2] + "\r\n";
 		send(Clientfd, msg.c_str(), msg.size(), 0);
-		return(":" + client.get_nick() + "!~" + client.get_userName() + "@loclhost INVITE " + split[1] + " to " + split[2] + "\r\n");
 	}			
 	return "";
 }
