@@ -39,7 +39,6 @@ std::string get_value(std::string token)
     return weather;
 }
 
-// A helper function to extract the weather information from the API response
 std::string parse_weather(std::string json, Client &client)
 {
     (void)(client);
@@ -60,20 +59,17 @@ std::string parse_weather(std::string json, Client &client)
     return (response);
 }
 
-// A helper function to handle the data received from the API
 static size_t WriteCallback(void *contents, size_t size, size_t nmemb, void *userp) {
     ((std::string*) userp)->append((char*) contents, size * nmemb);
     return size * nmemb;
 }
 
 std::string weather(std::string city, Client &client) {
-    // The URL of the weather API endpoint
-const std::string WEATHER_API_URL = "http://api.openweathermap.org/data/2.5/weather?q=";
 
-// Your OpenWeatherMap API key
-const std::string API_KEY = "13fa4f69de439413060d5076a7fbcd43";
-   std::string response = "";
-    // Construct the API URL with the user's input and the API key
+    const std::string WEATHER_API_URL = "http://api.openweathermap.org/data/2.5/weather?q=";
+
+    const std::string API_KEY = "13fa4f69de439413060d5076a7fbcd43";
+    std::string response = "";
     std::string url = WEATHER_API_URL + city + "&appid=" + API_KEY;
 
     // Initialize libcurl
@@ -85,7 +81,6 @@ const std::string API_KEY = "13fa4f69de439413060d5076a7fbcd43";
     if (curl) {
         // Set the API URL to fetch
         curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
-
         // Set the function to handle the data received from the API
         std::string response_string;
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, WriteCallback);
@@ -113,6 +108,8 @@ const std::string API_KEY = "13fa4f69de439413060d5076a7fbcd43";
 
 std::string server::weather_response(std::vector<std::string> tokens, Client &client)
 {
+    if(!client.get_print())
+		return (":localhost 451 * TOPIC :You must finish connecting with nickname first.\r\n");
     if ((tokens.size() == 2 && tokens[1] == ":") || tokens.size() < 2)
         return (":localhost 461 " + client.get_nick() + " WEATHER " + " :Not enough parameters\r\n");
     std::string response = weather(tokens[1], client);

@@ -57,9 +57,6 @@ server::~server()
 
 /*-------------- Server Functions -----------------*/
 
-
-/////////// work heeeeeeere //////////////////////////
-
 int server::request_handler(int i, fd_set *master)
 {
     char read_buf[512];
@@ -68,42 +65,28 @@ int server::request_handler(int i, fd_set *master)
     if (bytes_received == -1) {
         close(i);
         FD_CLR(i, master);
-        client_data.erase(i); // Remove client data from map
+        client_data.erase(i);
         return -1;
     }
-
-    // Append received data to client's data stream
     std::string& client_stream = client_data[i].first;
     client_stream.append(read_buf, bytes_received);
 
-    // Check for newline character
     size_t newline_pos = client_stream.find("\r\n");
     if (newline_pos != std::string::npos) {
         std::string request = client_stream.substr(0, newline_pos);
         request[request.length()] = '\0';
 
         parse_request((char *)request.c_str(), i, master);
-
-        // Remove processed data from client's data stream
         client_stream.erase(0, newline_pos+1);
-
-        // If CTRL+D was previously received, send back stored data
         if (client_data[i].second) {
-            // Send stored data
             std::string stored_data = client_data[i].first;
             send(i, stored_data.c_str(), stored_data.size(), 0);
-
-            // Clear stored data
             client_data[i].first.clear();
             client_data[i].second = false;
         }
     }
-
-    // Check for CTRL+D
-    if (bytes_received == 0) {
+    if (bytes_received == 0)
         client_data[i].second = true;
-    }
-
     return 1;
 }
 

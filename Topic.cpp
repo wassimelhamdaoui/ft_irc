@@ -57,7 +57,6 @@ std::string server::set_topic(std::string token, std::string topic, Client &clie
         this->_channels[token].set_topic(topic);
         if (this->_channels[token].get_members().size() != 0)
         {
-            // change topic message
             response = ":" + client.get_nick() + " TOPIC " + token + " :" + topic + "\r\n";
             std::vector<int> members = this->_channels[token].get_members();
             for (size_t i = 0; i < members.size(); i++)
@@ -75,13 +74,10 @@ std::string server::topic_response(std::vector<std::string> tokens, Client &clie
     if(!client.get_print())
 		return (":localhost 451 * TOPIC :You must finish connecting with nickname first.\r\n");
     std::string response = "";
-
-    // clear topic
     if (tokens.size() == 3 && tokens[tokens.size() - 1] == "::")
     {
         if (!has_comma(tokens[1]))
             response = clear_topic(tokens[1], client);
-        // clear topic for multichannel
         else if (has_comma(tokens[1]))
         {
             std::vector<std::string> channels = ft_split(tokens[1], ',');
@@ -94,14 +90,10 @@ std::string server::topic_response(std::vector<std::string> tokens, Client &clie
     {
         if (tokens.size() == 2 && tokens[1] == ":")
             return (response = ":localhost 461 " + client.get_nick() + " TOPIC "  + ":Not enough parameters\r\n");
-        // know topic
         else if (tokens.size() == 2)
         {
             if (!has_comma(tokens[1]))
-            {
                 response = know_topic(tokens[1], client);
-            }
-            // know topic for multichannel
             else if (has_comma(tokens[1]))
             {
                 std::vector<std::string> channels = ft_split(tokens[1], ',');
