@@ -225,27 +225,12 @@ bool	Channel::is_empty() const
 
 // send message to all members of channel
 
-void Channel::broadcast_message(std::string message, std::string nick, int fd)
+void Channel::broadcast_message(std::string message, int fd)
 {
 	for (size_t i = 0; i < this->members.size(); i++)
 	{
 		if(this->members[i] != fd)
-		{
-			std::string msg = ":" + nick + " " + message;
-			send(this->members[i], msg.c_str(), msg.size(), 0);
-		}
-	}
-}
-
-void Channel::broad_message(std::string message, int fd)
-{
-	for (size_t i = 0; i < this->members.size(); i++)
-	{
-		if(this->members[i] != fd)
-		{
-			// std::string msg = ":" + nick + " " + message;
 			send(this->members[i], message.c_str(), message.size(), 0);
-		}
 	}
 }
 

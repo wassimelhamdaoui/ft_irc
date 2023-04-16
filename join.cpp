@@ -6,7 +6,7 @@
 /*   By: mabdelba <mabdelba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/06 08:05:10 by waelhamd          #+#    #+#             */
-/*   Updated: 2023/04/16 05:11:01 by mabdelba         ###   ########.fr       */
+/*   Updated: 2023/04/16 15:12:53 by mabdelba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ std::string server::join_response(std::vector<std::string> split, Client &client
 
 	if(!client.get_print())
 		return (":localhost 451 * JOIN :You must finish connecting with nickname first.\r\n");
-	if(split.size() == 2 && split[1] == "#")
+	if(split.size() == 1 || (split.size() == 2 && split[1] == "#"))
 		return(":localhost 461 " + client.get_nick() + " " + split[0] + " :Not enough parameters\r\n");
 	else if(split.size() >= 2)
 	{
@@ -68,7 +68,7 @@ std::string server::join_response(std::vector<std::string> split, Client &client
 						{
 							client.set_channel(names[i]);
 							this->_channels[names[i]].add_member(client.get_fd());
-							this->_channels[names[i]].broadcast_message("!" + client.get_userName() + "@"+ get_adderss() + " JOIN :" + names[i] + "\r\n", client.get_nick(), 0);
+							this->_channels[names[i]].broadcast_message(":" + client.get_nick() + "!~" + client.get_userName() + "@"+ get_adderss() + " JOIN :" + names[i] + "\r\n", 0);
 						}
 						else
 							mysend(client.get_fd(), ":localhost 473 " + client.get_nick() + " " + names[i] + " :Cannot join channel (+i)\r\n");
@@ -81,7 +81,7 @@ std::string server::join_response(std::vector<std::string> split, Client &client
 							{
 								client.set_channel(names[i]);
 								this->_channels[names[i]].add_member(client.get_fd());
-								this->_channels[names[i]].broadcast_message("!" + client.get_userName() + "@"+ get_adderss() + " JOIN :" + names[i] + "\r\n", client.get_nick(), 0);
+								this->_channels[names[i]].broadcast_message(":" + client.get_nick() + "!~" + client.get_userName() + "@"+ get_adderss() + " JOIN :" + names[i] + "\r\n", 0);
 							}
 							else
 								mysend(client.get_fd(), ":localhost 475 " + client.get_nick() + " " + names[i] + " :Cannot join channel (+k)\r\n");
@@ -92,7 +92,7 @@ std::string server::join_response(std::vector<std::string> split, Client &client
 							{
 								client.set_channel(names[i]);
 								this->_channels[names[i]].add_member(client.get_fd());
-								this->_channels[names[i]].broadcast_message("!" + client.get_userName() + "@"+ get_adderss() + " JOIN :" + names[i] + "\r\n", client.get_nick(), 0);
+								this->_channels[names[i]].broadcast_message(":" + client.get_nick() + "!~" + client.get_userName() + "@"+ get_adderss() + " JOIN :" + names[i] + "\r\n", 0);
 							}
 							else
 								mysend(client.get_fd(), ":localhost 475 " + client.get_nick() + " " + names[i] + " :Cannot join channel (+k)\r\n");

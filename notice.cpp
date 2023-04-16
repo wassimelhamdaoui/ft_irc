@@ -6,7 +6,7 @@
 /*   By: mabdelba <mabdelba@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/12 10:17:42 by waelhamd          #+#    #+#             */
-/*   Updated: 2023/04/16 05:11:22 by mabdelba         ###   ########.fr       */
+/*   Updated: 2023/04/16 14:45:53 by mabdelba         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,8 @@ std::string server::notice_response(std::string buff, Client &client)
 	std::vector<std::string>	split;
 	std::vector<std::string>	recipient;
 
+	if(!client.get_print())
+		return (":localhost 451 * NOTICE :You must finish connecting with nickname first.\r\n");
 	split_command(buff, split);
 	if (split.size() == 1)
 		return (client.get_fd(), ":" + client.get_nick() + " 461 NOTICE :Not enough parameters\n");
@@ -44,9 +46,7 @@ std::string server::notice_response(std::string buff, Client &client)
 		for(; it != recipient.end(); it++)
 		{
 			if (this->_channels.find(*it) != this->_channels.end())//if recipient is a channel
-			{
-				this->_channels[*it].broadcast_message(split[2], client.get_nick(), client.get_fd());
-			}
+				this->_channels[*it].broadcast_message(":" + client.get_nick() + " NOTICE " + *it + " :" + split[2] + "\r\n", client.get_fd());
 			else if (getClientFd(this->_map, *it))//if recipient is a user
 			{
 				std::string tmp = ":" + client.get_nick() + " NOTICE " + *it + " :" + split[2] + "\r\n";
