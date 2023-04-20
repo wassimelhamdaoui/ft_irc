@@ -1,6 +1,20 @@
 # ft_irc
-Simple IRC Server based on the last rfc
+Simple IRC Server based on the RFC (mainly 2812) written in C++.
 
+ft_irc does not support server-server communication and is best used with LimeChat (or any client that send packets terminated with \r\n).
+
+# How to Run ?
+
+Do ``` make ```
+then run :
+
+``` ./IRC <port> <password> ```
+
+for port you can use: from 6667 up to 6672.<br>
+password: you can use password of you choice.<br>
+
+
+# Handled commands:
 
 # 👨‍💻 Ressources
 * [What is a Socket?](https://www.tutorialspoint.com/unix_sockets/what_is_socket.htm)
