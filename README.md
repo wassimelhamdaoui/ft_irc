@@ -16,6 +16,23 @@ password: you can use password of you choice.<br>
 
 # Handled commands:
 
+``` 
+- PASS
+- NICK 
+- USER
+- JOIN
+- PART
+- TOPIC
+- INVITE
+- KICK
+- MODE
+- QUIT
+- PRIVMSG
+- NOTICE
+- WEATHER: for weather bot (bonus part)
+
+```
+
 # 👨‍💻 Ressources
 * [What is a Socket?](https://www.tutorialspoint.com/unix_sockets/what_is_socket.htm)
 * [Unix Socket - Network Addresses](https://www.tutorialspoint.com/unix_sockets/network_addresses.htm)
